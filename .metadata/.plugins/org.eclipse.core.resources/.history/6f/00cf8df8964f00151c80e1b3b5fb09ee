@@ -1,0 +1,30 @@
+import java.io.IOException;
+import java.nio.file.InvalidPathException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+public class fileReport {
+	
+	
+	public fileReport(String file_path){
+		
+		BufferedReader br = null; 
+		try{
+			String currentLine;
+
+			br = new BufferedReader(new FileReader(file_path));
+			while ((currentLine = br.readLine()) != null) {
+				System.out.println(currentLine);
+			}
+			
+		}catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+}

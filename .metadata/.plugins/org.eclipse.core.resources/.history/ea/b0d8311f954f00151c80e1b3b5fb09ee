@@ -1,0 +1,33 @@
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+
+public class fileReport {
+	
+	
+	public fileReport(String file_path){
+		try{
+			Path p = FileSystems.getDefault().getPath(file_path);
+		    BufferedReader reader = Files.newBufferedReader(p, StandardCharsets.UTF_8);
+		}
+		catch(InvalidPathException e){
+			System.out.print("invalid path exception");
+		}
+		catch(IOException ioe){
+			System.out.print ("File did not read.");
+		}
+	}
+	
+	public static boolean exists(Path path){
+		
+		boolean e = false; 
+		
+		return e;
+	}
+
+}

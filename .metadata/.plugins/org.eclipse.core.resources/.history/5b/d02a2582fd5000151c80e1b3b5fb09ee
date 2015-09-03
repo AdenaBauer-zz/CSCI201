@@ -1,0 +1,47 @@
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.File;
+
+public class fileReport {
+	public fileReport() throws IOException {
+		
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
+		
+		boolean fileDoesntWork = true;
+		
+		while(fileDoesntWork){
+			
+			System.out.print("Please enter a file name or path: ");
+			String file_path = br.readLine();
+			
+			try {
+				File f = new File(file_path);
+				FileReader fr = new FileReader(f.getAbsolutePath());
+				System.out.print("things worked with file");
+				String line = br.readLine();
+				System.out.println("Line #1 = " + line);
+				if (line != null) {
+					line = br.readLine();
+					System.out.println("Line #2 = " + line);
+				}
+				br.close();
+				fr.close();
+			} 
+			catch (FileNotFoundException fnfe) {
+				System.out.println("File doesn't exist. \n");
+				continue;
+			} 
+			catch (IOException ioe) {
+				System.out.println("File contents are not readable.");
+				continue;
+			}
+			fileDoesntWork = false;	
+		}
+		
+	}
+}

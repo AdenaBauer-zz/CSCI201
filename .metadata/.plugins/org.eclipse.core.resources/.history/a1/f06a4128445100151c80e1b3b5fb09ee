@@ -1,0 +1,83 @@
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.File;
+
+public class fileReport {
+	
+	String[] fileSentences = new String[1000];
+	int lines = 0; 
+	
+	public double fileSize(File f){
+		return f.length();
+	}
+	
+	public int characterCount(){
+		int charCount = 0;
+		for(int i = 0; i < lines; i++){
+			charCount = charCount + fileSentences[i].length();
+		}
+		return charCount;
+	}
+	
+	public void makeReport(File f){
+		System.out.print("in make report");
+		System.out.print("File size: "+fileSize(f)+ " bytes." + "\n"); //size of file
+		System.out.print("Character count:" + characterCount() + "\n"); //character count		
+		
+	}
+	public void readFile() throws IOException{
+				
+		InputStreamReader isr = new InputStreamReader(System.in);
+		
+		boolean fileDoesntWork = true;
+		
+		while(fileDoesntWork){
+			
+			System.out.print("Please enter a file name or path: ");
+		
+			try {
+				BufferedReader br = new BufferedReader(isr);
+				String file_path = br.readLine();
+				
+				if(new String(file_path).equals("exit")){
+					return;
+				}
+												
+				File f = new File(file_path);
+				FileReader fr = new FileReader(f.getAbsolutePath());
+				BufferedReader br2 = new BufferedReader(fr);
+				boolean endOfFile = false;
+				
+				int counter = 0; 
+				while(endOfFile == false){
+					String line = br2.readLine();
+					fileSentences[counter] = line;
+					if (line == null){
+						endOfFile = true;
+						lines = counter +1;
+						break;
+					}
+					System.out.println("Line #" +counter +" = " + line);
+
+					counter++;
+				}		
+				
+				fileDoesntWork = false;
+				makeReport(f);
+			} 
+			catch (FileNotFoundException fnfe) {
+				System.out.println("File doesn't exist. \n");
+				continue;
+			} 
+			catch (IOException ioe) {
+				System.out.println("File contents are not readable.");
+				continue;
+			}
+		}
+		return;	
+	}
+}
