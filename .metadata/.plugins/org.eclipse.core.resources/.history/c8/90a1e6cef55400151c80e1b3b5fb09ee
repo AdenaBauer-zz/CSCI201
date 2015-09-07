@@ -1,0 +1,130 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class directoryReport {
+	int numFiles1 = 0;
+	int numFiles2 = 0; 
+	
+	ArrayList<File> files1;
+	ArrayList<File> files2;
+
+	String smallestF1;
+	String largestF1;
+	String smallestF2;
+	String largestF2;
+	
+	int totalFileSize1;
+	int totalFileSize2;
+	
+	int numDirectories;
+	
+	void fileSizes(int n){
+		if(n == 0){
+			largestF1 = files1.get(0).getName();
+			smallestF1 = files1.get(0).getName();
+			
+			for(int i = 0; i < files1.size(); i++){
+				if(!files1.get(i).isDirectory()){
+					totalFileSize1 = (int) (totalFileSize1 + files1.get(i).length());
+					if(files1.get(i).length() > largestF1.length()){
+						largestF1 = files1.get(i).getName();
+					}
+					if(files1.get(i).length() < smallestF1.length()){
+						smallestF1 = files1.get(i).getName();
+					}
+				}
+			}	
+		}
+			
+		/////
+		
+		if(n == 1){
+			largestF2 = files2.get(0).getName();
+			smallestF2 = files2.get(0).getName();
+			
+			for(int i = 0; i < files2.size(); i++){
+				if(!files2.get(i).isDirectory()){
+					totalFileSize2 = (int) (totalFileSize2 + files2.get(i).length());
+					if(files2.get(i).length() > largestF2.length()){
+						largestF2 = files2.get(i).getName();
+					}
+					if(files2.get(i).length() < smallestF2.length()){
+						smallestF2 = files2.get(i).getName();
+					}
+				}
+			}
+		}
+	}
+	
+	public void makeReport(){
+		//for one file
+		System.out.print("\nDIRECTORY REPORT: \n------------\n");
+		System.out.print("Number of Files: "+numFiles1 + "\n"); //number of files
+		fileSizes(0); 
+		System.out.print("Largest File: " + largestF1 + "\n"); //largest file
+		System.out.print("Smallest File: " + smallestF1 + "\n"); //smallest file
+		System.out.print("Average File Size: " + totalFileSize1/numFiles1 + "\n"); //average file size
+
+
+		
+	}	
+	
+	public void readDirectory(int n){
+		numDirectories = n; 
+		
+		InputStreamReader isr = new InputStreamReader(System.in);
+		
+		for(int j = 0; j < numDirectories; j++){
+			boolean fileDoesntWork = true;
+			
+			while(fileDoesntWork){
+				
+				if(n == 0){
+					System.out.print("Please enter a directory name or path: ");
+				}
+				if(n == 1){
+					int x = j + 1; 
+					System.out.print("Please enter the directory name or path for directory " + x + ": ");
+				}
+				
+				try{
+					BufferedReader br = new BufferedReader(isr);
+					String dir_path = br.readLine();
+					
+					if(new String(dir_path).equals("exit")){
+						return;
+					}
+													
+					File f = new File(dir_path);
+					files = new ArrayList<File>(Arrays.asList(f.listFiles()));
+					int count = files.size();
+					for(int i = 0; i < count; i++){
+						if(!files.get(i).isDirectory()){
+							numFiles++;
+						}
+					}
+					
+					fileDoesntWork = false; 
+					makeReport();
+				} 
+				catch (FileNotFoundException fnfe) {
+					System.out.println("File doesn't exist. \n");
+					continue;
+				} 
+				catch (IOException ioe) {
+					System.out.println("File contents are not readable.");
+					continue;
+				}
+			}
+		}
+	}
+}
