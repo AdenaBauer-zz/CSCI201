@@ -1,0 +1,20 @@
+
+public class gameManager extends Sorry{
+	public static final long serialVersionUID = 1;
+	
+	JPanel gamePanel;
+	
+	public void createBoard(){
+		gamePanel = new JPanel();
+		gamePanel.setLayout(new GridLayout(2,2));
+		
+		gamePanel.add(new JLabel("hello"));
+	}
+	
+	public gameManager(JPanel g){
+		gamePanel = g;
+		createBoard();
+		
+	}
+
+}

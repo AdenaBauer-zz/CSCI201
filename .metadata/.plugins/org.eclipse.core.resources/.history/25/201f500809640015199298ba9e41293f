@@ -1,0 +1,19 @@
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class gameManager{
+	public static final long serialVersionUID = 1;
+	
+	JPanel gamePanel;
+	
+	public void createBoard(){
+		p.add(new JLabel("hello"));
+	}
+	
+	public gameManager(JPanel p){
+		gamePanel = p;
+		createBoard();
+		
+	}
+
+}

@@ -1,0 +1,18 @@
+import java.awt.GridLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class gameManager extends Sorry{
+	public static final long serialVersionUID = 1;
+		
+	public void createBoard(){
+		p.add(new JLabel("hello"));
+	}
+	
+	public gameManager(){
+		createBoard();
+		
+	}
+
+}

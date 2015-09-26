@@ -1,0 +1,6 @@
+import javax.swing.JButton;
+
+public class StartButton extends JButton{
+	public static final long serialVersionUID = 1;
+
+}

@@ -1,0 +1,10 @@
+import javax.swing.JButton;
+
+public class BlackButton extends JButton {
+	public static final long serialVersionUID = 1;
+
+	public BlackButton(){
+		
+	}
+
+}

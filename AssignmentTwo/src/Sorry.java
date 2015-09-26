@@ -15,15 +15,21 @@ import javax.swing.JRadioButton;
 public class Sorry extends JFrame {
 	public static final long serialVersionUID = 1;
 	
-	JPanel p; 
+	JPanel p, colors; 
 	JLabel sorryLabel; //this becomes the label for numPlayers, and chooseColor
 	JButton startButton, confirmButton, colorConfirmButton;
-	ButtonGroup numPlayersRadio;
+	ButtonGroup numPlayersRadio, colorBG;
 	JRadioButton two, three, four;
 	JButton red, green, blue, yellow;
+	gameManager gm; 
 
 	public void playGame(){
-		//TODO: uh,, everything lol
+		p.removeAll();
+		
+		gm = new gameManager(p);
+		
+		revalidate();
+		repaint();
 	}
 	
 	public void pickColor(){
@@ -31,17 +37,28 @@ public class Sorry extends JFrame {
 		p.remove(two);p.remove(three);p.remove(four);
 		p.remove(confirmButton);
 		
-		JPanel colors = new JPanel(new GridLayout (2,2));	
-		ButtonGroup colorBG = new ButtonGroup();
+		colors = new JPanel(new GridLayout (2,2));	
+		colorBG = new ButtonGroup();
 		red = new JButton("Red");
 		green = new JButton("Green");
 		blue = new JButton("Blue");
 		yellow = new JButton("Yellow");
 		
+		yellow.setOpaque(true);
+		yellow.setBorderPainted(false);
 		yellow.setBackground(Color.YELLOW);
+				
+		blue.setOpaque(true);
+		blue.setBorderPainted(false);
 		blue.setBackground(Color.BLUE);
-		red.setBackground(Color.RED);
+		
+		green.setOpaque(true);
+		green.setBorderPainted(false);
 		green.setBackground(Color.GREEN);
+		
+		red.setOpaque(true);
+		red.setBorderPainted(false);
+		red.setBackground(Color.RED);
 		
 		colorBG.add(yellow);
 		colorBG.add(red);
@@ -66,21 +83,43 @@ public class Sorry extends JFrame {
 		red.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				colorConfirmButton.setEnabled(true);
+				red.setForeground(Color.GRAY);
+				
+				blue.setForeground(Color.BLACK);
+				yellow.setForeground(Color.BLACK);
+				green.setForeground(Color.BLACK);
 			}
 		});
 		green.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				colorConfirmButton.setEnabled(true);
+				green.setForeground(Color.GRAY);
+				
+				red.setForeground(Color.BLACK);
+				yellow.setForeground(Color.BLACK);
+				blue.setForeground(Color.BLACK);
+
 			}
 		});
 		blue.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				colorConfirmButton.setEnabled(true);
+				blue.setForeground(Color.GRAY);
+				
+				red.setForeground(Color.BLACK);
+				yellow.setForeground(Color.BLACK);
+				green.setForeground(Color.BLACK);
 			}
 		});
 		yellow.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				colorConfirmButton.setEnabled(true);
+				yellow.setForeground(Color.GRAY);
+				
+				red.setForeground(Color.BLACK);
+				blue.setForeground(Color.BLACK);
+				green.setForeground(Color.BLACK);
+
 			}
 		});
 		

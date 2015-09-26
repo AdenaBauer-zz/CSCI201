@@ -1,0 +1,34 @@
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JButton;
+
+public class SlideButton extends JButton {
+	public static final long serialVersionUID = 1;
+	
+	/* 0 = red
+	 * 1 = yellow
+	 * 2 = green
+	 * 3 = blue
+	 */
+	
+	public SlideButton(int color){
+		this.setOpaque(true);
+	    this.setPreferredSize(new Dimension(100, 60));
+	    
+	    switch(color){
+	    case 0:
+	    	this.setBackground(Color.RED);
+	    	break;
+	    case 1:
+	    	this.setBackground(Color.YELLOW);
+	    	break;
+	    case 2:
+	    	this.setBackground(Color.GREEN);
+	    	break;
+	    case 3:
+	    	this.setBackground(Color.BLUE);
+	    }
+	}
+
+}
