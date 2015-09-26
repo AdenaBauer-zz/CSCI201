@@ -9,7 +9,7 @@ public class BlackButton extends JButton {
 	public BlackButton(){
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
-        this.setPreferredSize(new Dimension(100, 60));
-	}
+		 this.setMinimumSize(new Dimension(40, 30));
+		    this.setMaximumSize(new Dimension(40, 30));	}
 
 }

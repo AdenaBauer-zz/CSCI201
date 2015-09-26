@@ -1,0 +1,15 @@
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JLabel;
+
+public class BlackButton extends JLabel {
+	public static final long serialVersionUID = 1;
+
+	public BlackButton(){
+		this.setOpaque(true);
+		this.setBackground(Color.BLACK);
+        this.setPreferredSize(new Dimension(80, 60));
+	}
+
+}

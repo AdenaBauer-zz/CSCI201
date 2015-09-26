@@ -12,10 +12,11 @@ public class SlideButton extends JButton {
 	 * 3 = blue
 	 */
 	
-	public SlideButton(int 0){
+	public SlideButton(int color){
 		
 		this.setOpaque(true);
-	    this.setPreferredSize(new Dimension(100, 60));
+		 this.setMinimumSize(new Dimension(40, 30));
+		    this.setMaximumSize(new Dimension(40, 30));
 	    
 	    switch(color){
 	    case 0:

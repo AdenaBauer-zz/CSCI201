@@ -19,8 +19,9 @@ public class HomeBaseButton extends JButton {
 			this.setText("Home");
 		}
 		this.setOpaque(true);
-	    this.setPreferredSize(new Dimension(100, 60));
-	    
+	    this.setMinimumSize(new Dimension(40, 30));
+	    this.setMaximumSize(new Dimension(40, 30));
+
 	    switch(color){
 	    case 0:
 	    	this.setBackground(Color.YELLOW);

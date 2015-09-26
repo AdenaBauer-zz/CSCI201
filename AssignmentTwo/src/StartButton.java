@@ -16,7 +16,8 @@ public class StartButton extends JButton{
 		
 		super("Start");
 		this.setOpaque(true);
-	    this.setPreferredSize(new Dimension(100, 60));
+		 this.setMinimumSize(new Dimension(40, 30));
+		    this.setMaximumSize(new Dimension(40, 30));
 	    
 	    switch(color){
 	    case 0:
