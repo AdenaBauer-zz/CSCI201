@@ -1,0 +1,31 @@
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class Sorry extends JFrame {
+	public static final long serialVersionUID = 1;
+
+	public Sorry() {
+		super("My First GUI");
+		setSize(640, 480);
+		setLocation(1500, 100);
+		
+		JLabel sorryLabel = new JLabel("Sorry!");
+		add(sorryLabel, BorderLayout.NORTH);
+		
+		JButton startButton = new JButton("Start");
+		startButton.setPreferredSize(new Dimension(40, 40));
+		add(startButton, FlowLayout.CENTER);
+		 x
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+
+	public static void main(String [] args) {
+		new Sorry();
+	}
+}

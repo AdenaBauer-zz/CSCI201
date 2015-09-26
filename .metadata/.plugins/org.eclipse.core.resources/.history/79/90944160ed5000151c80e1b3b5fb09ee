@@ -1,5 +1,0 @@
-import client.FactoryObject;
-
-public class FactoryWall extends FactoryObject {
-
-}

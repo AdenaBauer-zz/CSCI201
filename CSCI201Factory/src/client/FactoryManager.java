@@ -33,13 +33,24 @@ public class FactoryManager implements Runnable , ChangeListener{
 		running = false;
 	}
 	
+	private Factory mFactory;
+	private JTable mTable;
+	
 	public void loadFactory(Factory inFactory, JTable inTable) {
 		//must stop the current animation, load in the factory, and start the new factorySimulation
+		mFactory = inFactory;
+		mTable = inTable;
+		
 		stop();
 		mFactorySimulation = new FactorySimulation(inFactory, inTable);
 		mRenderPanel.refresh();
 		start();
 	}
+	
+	public void reset(){
+		loadFactory(mFactory, mTable);
+	}
+	
 	
 	public void setFactoryRenderer(FactoryPanel inRenderPanel) {
 		mRenderPanel = inRenderPanel;

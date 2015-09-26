@@ -1,0 +1,49 @@
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+
+public class Sorry extends JFrame {
+	public static final long serialVersionUID = 1;
+	private JPanel borderPanel, flowPanel, gridPanel, boxPanel, gridBagPanel;
+
+	public Sorry() {
+		super("Sorry");
+		makeMenu();
+		createGUI();
+		addEvents();
+	}
+
+	private void createGUI() {
+		setSize(640, 480);
+		setLocation(900, 100);
+	}
+
+	private void makeMenu() {
+		JPanel jp = new JPanel();
+		jp.setLayout(new FlowLayout());
+		JButton jb1 = new JButton("Start");
+		jp.add(jb1);
+		jp.setVisible(true);
+	}
+
+	private void addEvents() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public static void main(String [] args) {
+		Sorry s = new Sorry();
+		s.setVisible(true);
+	}
+
+}

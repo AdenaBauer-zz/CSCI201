@@ -1,0 +1,38 @@
+import java.awt.BorderLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Sorry extends JFrame {
+	public static final long serialVersionUID = 1;
+
+	public Sorry() {
+		super("My First GUI");
+		setSize(300, 400);
+		setLocation(1500, 100);
+
+		JPanel northPanel = new JPanel();
+		JButton helloButton = new JButton("Hello");
+		northPanel.add(helloButton);
+		JButton mooseButton = new JButton("World");
+		northPanel.add(mooseButton);
+		add(northPanel, BorderLayout.NORTH);
+
+		JButton worldButton = new JButton("Center");
+		add(worldButton, BorderLayout.CENTER);
+		JButton westButton = new JButton("West");
+		add(westButton, BorderLayout.WEST);
+		JButton eastButton = new JButton("East");
+		add(eastButton, BorderLayout.EAST);
+		JButton southButton = new JButton("South");
+		add(southButton, BorderLayout.SOUTH);
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+
+	public static void main(String [] args) {
+		new Sorry();
+	}
+}

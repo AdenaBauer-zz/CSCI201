@@ -1,0 +1,7 @@
+package client;
+
+import JFrame;
+
+public class FactoryController extends JFrame {
+
+}

@@ -2,10 +2,18 @@ package client;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import resource.Factory;
@@ -21,12 +29,14 @@ public class FactorySimulation {
 	private Map<String, FactoryNode> mFNodeMap;
 	private FactoryTaskBoard mTaskBoard;
 	private boolean isDone = false;
+	private double totalTime = 0.0;
 	
 	//instance constructor
 	{
 		mFObjects = new ArrayList<FactoryObject>();
 		mFWorkers = new ArrayList<FactoryWorker>();
 		mFNodeMap = new HashMap<String, FactoryNode>();
+		
 	}
 	
 	FactorySimulation(Factory inFactory, JTable inTable) {
@@ -41,6 +51,7 @@ public class FactorySimulation {
 				mFObjects.add(mFNodes[width][height]);
 			}
 		}
+
 		
 		//Link all of the nodes together
 		for(FactoryNode[] nodes: mFNodes) {
@@ -78,7 +89,31 @@ public class FactorySimulation {
 			mFWorkers.add(fw);
 		}
 		
+		Scanner reader = null;
+		
+		try{
+			reader = new Scanner(new File("walls"));
+			while(reader.hasNext()){
+				int x = reader.nextInt();
+				int y = reader.nextInt();
+				String file = reader.next();
+				FactoryWall fw = new FactoryWall(new Rectangle(x,y,1,1), file);
+				mFObjects.add(fw);
+				mFNodes[fw.getX()][fw.getY()].setObject(fw);
+			}
+
+		}
+		catch(FileNotFoundException e){
+			System.out.print(e.getMessage());
+		}
+		finally{
+			if(reader != null){
+				reader.close();
+			}
+		}
+		
 		//Create factory wall
+		/*
 		for(int i = 0; i < 10; i++){
 			FactoryWall fw = new FactoryWall(new Rectangle(7,i,1,1));
 			mFObjects.add(fw);
@@ -88,19 +123,53 @@ public class FactorySimulation {
 			FactoryWall fw = new FactoryWall(new Rectangle(i,9,1,1));
 			mFObjects.add(fw);
 			mFNodes[fw.getX()][fw.getY()].setObject(fw);
-		}
+		}*/
 		
 	}
 	public void update(double deltaTime) {
+		totalTime += deltaTime;
 		if(isDone) return;
 		//Update all the objects in the factor that need updating each tick
 		for(FactoryObject object : mFWorkers) object.update(deltaTime);
 		
 		if(mTaskBoard.isDone()){
 			isDone = true;
-			for(FactoryObject object : mFObjects){
-				if(object instanceof FactoryReporter){
-					((FactoryReporter) object).report();
+			
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			String outFileName = "reports/" + timestamp;
+			outFileName = outFileName.replaceAll("[-:. ]", "_");
+			
+			File file = null;
+			FileWriter fw = null;
+			DecimalFormat threePlaces = new DecimalFormat(".###");
+			JOptionPane.showMessageDialog(null, "Total time: " + threePlaces.format(totalTime) + "s", "Simulation Over!", JOptionPane.INFORMATION_MESSAGE);
+			
+			try{
+				file = new File(outFileName);
+				file.createNewFile();
+				
+				fw = new FileWriter (outFileName, true);
+				
+				for(FactoryObject object : mFObjects){
+					if(object instanceof FactoryReporter){
+						((FactoryReporter) object).report(fw);
+					}
+				}
+			}
+			catch(IOException ioe){
+				System.out.print("Error ocurred during the file write: " + outFileName);
+				if(file != null){
+					file.delete();
+				}
+			}
+			finally{
+				if(fw != null){
+					try{
+						fw.close();
+					}
+					catch(IOException ioe){
+						System.out.print("Error: Failed to Close FileWriter!");
+					}
 				}
 			}
 		}

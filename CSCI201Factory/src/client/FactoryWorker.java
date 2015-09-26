@@ -3,6 +3,8 @@ package client;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Stack;
 import java.util.concurrent.locks.Condition;
@@ -46,8 +48,8 @@ public class FactoryWorker extends FactoryObject implements Runnable, FactoryRep
 		new Thread(this).start();
 	}
 	@Override
-	public void report() {
-		System.out.println(mNumber+" finished at "+finished);
+	public void report(FileWriter fw) throws IOException {
+		fw.write(mNumber+" finished at "+finished + "\n");
 	}
 	
 	@Override

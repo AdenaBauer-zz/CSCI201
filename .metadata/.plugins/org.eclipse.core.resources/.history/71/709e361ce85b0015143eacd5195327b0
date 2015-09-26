@@ -1,0 +1,22 @@
+package client;
+
+import javax.swing.JFrame;
+import javax.swing.JSlider;
+
+public class FactoryController extends JFrame{
+	private JSlider simulationSpeedController;
+
+	private static final long serialVersionUID = 7573324399771995953L;
+	
+	public FactoryController(){
+		super("Factory Controler");
+		setSize(320, 240);
+		add(simulationSpeedController);
+		setVisible(true);
+		setLocationRelativeTo(null);
+		
+		
+	}
+
+}
+

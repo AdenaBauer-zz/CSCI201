@@ -1,0 +1,37 @@
+import java.awt.GridLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class Sorry extends JFrame {
+	public static final long serialVersionUID = 1;
+	
+	JPanel p = new JPanel();
+	JLabel sorryLabel = new JLabel("Sorry!");
+	JButton startButton = new JButton("Start");
+
+	public void initializeComponents(){
+		p = new JPanel();
+		p.setLayout(new GridLayout(3, 1));
+		p.add(sorryLabel);
+		p.add(startButton);
+		add(p);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public Sorry() {
+		super("My First GUI");
+		setSize(640, 480);
+		initializeComponents();	
+		setVisible(true);
+	}
+
+
+	public static void main(String [] args) {
+		new Sorry();
+	}
+}
+

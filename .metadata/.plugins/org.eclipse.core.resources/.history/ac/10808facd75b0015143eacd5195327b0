@@ -1,0 +1,30 @@
+import javax.swing.JFrame;
+
+public class LayoutManagerDemo extends JFrame{
+	public static final long serialVersionUID = 1;
+	
+	public LayoutManagerDemo(){
+		super("Layout Manager Demo");
+		initializeComponents();
+		addEvents();
+	}
+	
+	private void initializeComponents(){
+		
+	}
+	private void createGUI(){
+		setSize(300,400);
+		setLocation(700,100);
+		
+	}
+	private void addEvents(){
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String [] args){
+		LayoutManagerDemo lmd = new LayoutManagerDemo();
+		
+	}
+	
+	
+}

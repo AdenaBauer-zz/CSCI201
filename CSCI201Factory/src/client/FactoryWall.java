@@ -6,10 +6,10 @@ import libraries.ImageLibrary;
 
 public class FactoryWall extends FactoryObject {
 	
-	public FactoryWall(Rectangle inDimensions){
+	public FactoryWall(Rectangle inDimensions, String file){
 		super(inDimensions);
 		
-		mImage = ImageLibrary.getImage("resources/img/Wall.png");
+		mImage = ImageLibrary.getImage(file);
 	}
 
 }

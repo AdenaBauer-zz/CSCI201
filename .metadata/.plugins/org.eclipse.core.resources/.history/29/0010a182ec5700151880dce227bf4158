@@ -1,0 +1,20 @@
+import javax.swing.JFrame;
+
+public class myFirstGUI extends JFrame {
+	public static final long serialVersionUID = 1; //gets rid of warning
+	
+	public myFirstGUI(){
+		super("My First GUI");
+		setSize(300, 200);
+		setLocation(100, 200);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String [] args){
+		
+		myFirstGUI mfgui = new myFirstGUI();
+		mfgui.setVisible(true);
+		
+	}
+
+}
