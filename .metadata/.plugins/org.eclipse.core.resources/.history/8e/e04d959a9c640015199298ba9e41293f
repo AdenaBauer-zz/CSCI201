@@ -1,0 +1,272 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+
+public class gameManager{
+	public static final long serialVersionUID = 1;
+	
+	CardDeck cardDeck; 
+	
+	JButton cardDeckButton;
+	
+	JPanel gamePanel;
+	
+	/* 0 = yellow
+	 * 1 = green
+	 * 2 = red
+	 * 3 = blue
+	 */
+	
+	public void makeHomeBase(int color){
+		GridBagConstraints gbcHome = new GridBagConstraints();
+		if (color == 0){
+			gbcHome.gridx = 2;
+			for(int i = 0; i < 6; i++){
+				HomeBaseButton hb = new HomeBaseButton(color, i);
+				gbcHome.gridy = 1 + i;
+				gamePanel.add(hb, gbcHome);
+			}
+		}
+		if (color == 1){
+			gbcHome.gridy = 2;
+			for(int i = 0; i < 6; i++){
+				HomeBaseButton hb = new HomeBaseButton(color, i);
+				gbcHome.gridx = 14 - i;
+				gamePanel.add(hb, gbcHome);
+			}
+		}
+		if (color == 2){
+			gbcHome.gridx = 13;
+			for(int i = 0; i < 6; i++){
+				HomeBaseButton hb = new HomeBaseButton(color, i);
+				gbcHome.gridy = 14 - i;
+				gamePanel.add(hb, gbcHome);
+			}
+		}
+		if (color == 3){
+			gbcHome.gridy = 13;
+			for(int i = 0; i < 6; i++){
+				HomeBaseButton hb = new HomeBaseButton(color, i);
+				gbcHome.gridx = 1 + i;
+				gamePanel.add(hb, gbcHome);
+			}
+		}
+	}
+	
+	//x and y pos in the slide signify where the slide starts
+	public void MakeSlide(int slideLen, int slideColor, int xpos, int ypos, GridBagConstraints gbc){
+		
+		if(slideColor == 0){
+			gbc.gridy = 0;
+		}
+		if(slideColor == 1){
+			gbc.gridx = 15; 
+		}
+		if(slideColor == 2){
+			gbc.gridy = 15; 
+		}
+		if(slideColor == 3){
+			gbc.gridx = 0;
+		}
+	
+		if(slideColor == 0 || slideColor == 2){
+			for(int i = xpos; i < xpos + slideLen; i++){
+				gbc.gridx = i;
+				SlideButton sb = new SlideButton(slideColor);
+				gamePanel.add(sb, gbc);	
+			}
+		}
+		if(slideColor == 1 || slideColor == 3){
+			for(int i = ypos; i < ypos + slideLen; i++){
+				gbc.gridy = i;
+				SlideButton sb = new SlideButton(slideColor);
+				gamePanel.add(sb, gbc);			
+			}
+		}	
+	}
+	//makes yellow side of the board
+	public void createYellow(){
+		GridBagConstraints gbcY = new GridBagConstraints();
+		
+		BlackButton b = new BlackButton();
+		gbcY.gridx = 0; 
+		gbcY.gridy = 0;
+		gamePanel.add(b, gbcY);
+		
+		MakeSlide(4, 0, 1, 0, gbcY);
+		
+		makeHomeBase(0);
+		//make startbutton
+		GridBagConstraints gbcStart = new GridBagConstraints();
+		gbcStart.gridx = 4;
+		gbcStart.gridy = 1;
+		StartButton sb = new StartButton(0);
+		gamePanel.add(sb, gbcStart);
+		//end of make startbutton
+		
+		for(int i = 0; i < 4; i++){
+			BlackButton b1 = new BlackButton();
+			gbcY.gridx = 5+i;
+			gamePanel.add(b1,gbcY);
+		}
+		MakeSlide(5, 0, 9, 0, gbcY);
+		
+		BlackButton b2 = new BlackButton();
+		gbcY.gridx = 14; 
+		gbcY.gridy = 0;
+		gamePanel.add(b2, gbcY);
+	}
+	//makes green side of the board
+	public void createGreen(){
+		GridBagConstraints gbcG = new GridBagConstraints();
+
+		BlackButton b = new BlackButton();
+		gbcG.gridx = 15; 
+		gbcG.gridy = 0;
+		gamePanel.add(b,gbcG);
+		
+		MakeSlide(4, 1, 15, 1, gbcG);
+		
+		makeHomeBase(1);
+		//make startbutton
+		GridBagConstraints gbcStart = new GridBagConstraints();
+		gbcStart.gridx = 14;
+		gbcStart.gridy = 4;
+		StartButton sb = new StartButton(1);
+		gamePanel.add(sb, gbcStart);
+		//end of make startbutton
+		
+		for(int i = 0; i < 4; i++){
+			BlackButton b1 = new BlackButton();
+			gbcG.gridy = 5+i;
+			gamePanel.add(b1, gbcG);
+		}
+		MakeSlide(5, 1, 15, 9, gbcG);
+		
+		BlackButton b2 = new BlackButton();
+		gbcG.gridx = 15; 
+		gbcG.gridy = 14;
+		gamePanel.add(b2, gbcG);
+	}
+	
+	//makes red side of the board
+	public void createRed(){
+		GridBagConstraints gbcR = new GridBagConstraints();
+
+		BlackButton b = new BlackButton();
+		gbcR.gridx = 15; 
+		gbcR.gridy = 15;
+		gamePanel.add(b,gbcR);
+		
+		MakeSlide(4, 2, 11, 15, gbcR); // this is made going forward even tho the rest is made going backwards... 
+		
+		makeHomeBase(2);
+		//make startbutton
+		GridBagConstraints gbcStart = new GridBagConstraints();
+		gbcStart.gridx = 11;
+		gbcStart.gridy = 14;
+		StartButton sb = new StartButton(2);
+		gamePanel.add(sb, gbcStart);
+		//end of make startbutton
+		
+		for(int i = 0; i < 4; i++){
+			BlackButton b1 = new BlackButton();
+			gbcR.gridx = 10-i;
+			gamePanel.add(b1, gbcR);
+		}
+		MakeSlide(5, 2, 2, 15, gbcR);
+		
+		BlackButton b2 = new BlackButton();
+		gbcR.gridx = 1; 
+		gbcR.gridy = 15;
+		gamePanel.add(b2, gbcR);
+	}
+	//makes blue side of the board
+	public void createBlue(){
+		GridBagConstraints gbcB = new GridBagConstraints();
+
+		BlackButton b = new BlackButton();
+		gbcB.gridx = 0;
+		gbcB.gridy = 15;
+		gamePanel.add(b,gbcB);
+		
+		MakeSlide(4, 3, 0, 11, gbcB); // this is made going forward even tho the rest is made going backwards... 
+		
+		makeHomeBase(3);
+		//make startbutton
+		GridBagConstraints gbcStart = new GridBagConstraints();
+		gbcStart.gridx = 1;
+		gbcStart.gridy = 11;
+		StartButton sb = new StartButton(3);
+		gamePanel.add(sb, gbcStart);
+		//end of make startbutton
+		
+		for(int i = 0; i < 4; i++){
+			BlackButton b1 = new BlackButton();
+			gbcB.gridy = 10-i;
+			gamePanel.add(b1, gbcB);
+		}
+		MakeSlide(5, 3, 0, 2, gbcB);
+		
+		BlackButton b2 = new BlackButton();
+		gbcB.gridx = 0; 
+		gbcB.gridy = 1;
+		gamePanel.add(b2, gbcB);
+	}
+	
+	//manages board creation
+	public void createBoard(){
+		
+		createYellow(); //creating Yellow side
+		createGreen(); //creating Green side
+		createRed(); //creating Red side
+		createBlue(); //creating Blue side
+		
+		/*card deck button // 
+		GridBagConstraints gbcCardDeck = new GridBagConstraints();
+		gbcCardDeck.gridx = 8;
+		gbcCardDeck.gridy = 8;
+		cardDeckButton = new JButton("Cards");
+		cardDeckButton.setOpaque(true);
+		cardDeckButton.setMinimumSize(new Dimension(50, 30));
+		cardDeckButton.setMaximumSize(new Dimension(50, 30));
+		Border b = new LineBorder(Color.GRAY, 2);
+		cardDeckButton.setBorder(b);
+		gamePanel.add(cardDeckButton, gbcCardDeck);*/
+
+	}
+	
+	public gameManager(JPanel p){
+		gamePanel = p;
+		gamePanel.setLayout(new GridBagLayout());
+		createBoard();
+		
+	}
+
+}
+
+/*
+LETS THINK ABOUT THE BOARD:
+starts w/back
+then 4 colored slide pieces
+- the 2nd of these has 6 coming off of it. the last being "home"
+- the 4th of these has one coming off of it, being "start"
+then 4 black
+then 5 colored slide pieces
+then 1 black
+
+TYPES OF BUTTONS:
+start
+home base, leading to home
+slide
+black
+
+*/
+
+

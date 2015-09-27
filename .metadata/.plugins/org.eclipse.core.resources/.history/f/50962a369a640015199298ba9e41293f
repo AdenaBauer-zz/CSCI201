@@ -1,0 +1,22 @@
+import java.awt.GridBagConstraints;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+public class CardDeck {
+	JPanel gamePanel;
+	JButton deckButton;
+	
+	public CardDeck(JPanel g){
+		
+		g = gamePanel;
+		deckButton = new JButton("Cards");
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 8;
+		gbc.gridy = 8;
+		gamePanel.add(deckButton, gbc);
+		
+		
+	}
+
+}

@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class SlideButton extends JButton {
 	public static final long serialVersionUID = 1;
@@ -15,24 +17,28 @@ public class SlideButton extends JButton {
 	public SlideButton(int color){
 		
 		this.setOpaque(true);
-		 this.setMinimumSize(new Dimension(40, 30));
-		    this.setMaximumSize(new Dimension(40, 30));
+		this.setMinimumSize(new Dimension(30, 25));
+		this.setPreferredSize(new Dimension(30, 25));
 	    
 	    switch(color){
 	    case 0:
-	    	this.setBackground(Color.YELLOW);
+	    	Border b = new LineBorder(Color.YELLOW, 2);
+			this.setBorder(b);
 	    	this.setText(">");
 	    	break;
 	    case 1:
-	    	this.setBackground(Color.GREEN);
+	    	Border b1 = new LineBorder(Color.GREEN, 2);
+			this.setBorder(b1);
 	    	this.setText("V");
 	    	break;
 	    case 2:
-	    	this.setBackground(Color.RED);
+	    	Border b2 = new LineBorder(Color.RED, 2);
+			this.setBorder(b2);
 	    	this.setText("<");
 	    	break;
 	    case 3:
-	    	this.setBackground(Color.BLUE);
+	    	Border b3 = new LineBorder(Color.BLUE, 2);
+			this.setBorder(b3);
 	    	this.setText("^");
 	    }
 	}
