@@ -1,0 +1,67 @@
+
+public class Play {
+	
+	int numPlayers;
+	int humanPlayerColor;
+	Player [] players;//index zero will always be the human player
+	
+	public Play(){
+		initializePlayers();
+		manageGame();
+	}
+	public void initializePlayers(){
+		setNumAndColor();
+		
+		if(numPlayers == 2){
+			int secondColor;
+			if(humanPlayerColor == 0 || humanPlayerColor == 1){
+				secondColor = humanPlayerColor + 2;
+			}
+			else{
+				secondColor = humanPlayerColor - 2;
+			}
+			players[0] = new Player(humanPlayerColor);
+			players[1] = new Player(secondColor);
+		}
+		
+	
+	}
+	
+	public void manageGame(){
+		putPlayersOnBoard();
+
+	}
+	
+	public void putPlayersOnBoard(){
+		
+		for(int i = 0; i < numPlayers; i++){
+			
+		}
+		
+	}
+	
+	public void setNumAndColor(){
+		if(Sorry.two.isSelected()){
+			numPlayers = 2;
+		}
+		if(Sorry.three.isSelected()){
+			numPlayers = 3;
+		}
+		if(Sorry.four.isSelected()){
+			numPlayers = 4; 
+		}
+		if(Sorry.yellow.isSelected()){
+			humanPlayerColor = 0;
+		}
+		if(Sorry.green.isSelected()){
+			humanPlayerColor = 1;
+		}
+		if(Sorry.red.isSelected()){
+			humanPlayerColor = 2;
+		}
+		if(Sorry.blue.isSelected()){
+			humanPlayerColor = 3;
+		}	
+	}
+
+}

@@ -1,0 +1,37 @@
+import javax.swing.JButton;
+
+public class Tiles {
+	
+	JButton[] boardLoop;
+	JButton[] startButtons; 
+	int [] loopColors;
+	int counter; 
+	
+	/*
+	 * yellow = 0
+	 * green = 1
+	 * red = 2
+	 * blue = 3
+	 * black = 4
+	 */
+		
+	public Tiles(){
+		boardLoop = new JButton[60];
+		loopColors = new int[60];
+		startButtons = new JButton[4];	
+		counter = 0; 
+	}
+	
+	public void addTilesToLoop(JButton b, int color){
+		
+		boardLoop[counter] = b;
+		loopColors[counter] = color;	
+		counter = counter + 1;
+	}
+	public void addTilesToStart(JButton b, int color){
+		
+		startButtons[color] = b;
+	}
+	
+}
+

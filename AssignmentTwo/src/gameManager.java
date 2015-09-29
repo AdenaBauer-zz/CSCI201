@@ -12,21 +12,15 @@ import javax.swing.border.LineBorder;
 public class gameManager{
 	public static final long serialVersionUID = 1;
 		
-	JButton cardDeckButton;
-	
-	JPanel gamePanel;
+	static JButton cardDeckButton;
+	static Tiles spaceTiles; 
+	static JPanel gamePanel;
 	
 	/* 0 = yellow
 	 * 1 = green
 	 * 2 = red
 	 * 3 = blue
 	 */
-	
-	JButton yellowButtonsPath[] = new JButton[65];
-	JButton greenButtonsPath[] = new JButton[65];
-	JButton redButtonsPath[] = new JButton[65];
-	JButton blueButtonsPath[] = new JButton[65];
-	
 	public void makeHomeBase(int color){
 		GridBagConstraints gbcHome = new GridBagConstraints();
 		if (color == 0){
@@ -35,14 +29,17 @@ public class gameManager{
 				HomeBaseButton hb = new HomeBaseButton(color, i);
 				gbcHome.gridy = 1 + i;
 				gamePanel.add(hb, gbcHome);
+				spaceTiles.addTilesToHome(hb, 0);
 			}
-		}
+		}		
 		if (color == 1){
 			gbcHome.gridy = 2;
 			for(int i = 0; i < 6; i++){
 				HomeBaseButton hb = new HomeBaseButton(color, i);
 				gbcHome.gridx = 14 - i;
 				gamePanel.add(hb, gbcHome);
+				spaceTiles.addTilesToHome(hb, 1);
+
 			}
 		}
 		if (color == 2){
@@ -51,6 +48,8 @@ public class gameManager{
 				HomeBaseButton hb = new HomeBaseButton(color, i);
 				gbcHome.gridy = 14 - i;
 				gamePanel.add(hb, gbcHome);
+				spaceTiles.addTilesToHome(hb,2);
+
 			}
 		}
 		if (color == 3){
@@ -59,40 +58,51 @@ public class gameManager{
 				HomeBaseButton hb = new HomeBaseButton(color, i);
 				gbcHome.gridx = 1 + i;
 				gamePanel.add(hb, gbcHome);
+				spaceTiles.addTilesToHome(hb, 3);
 			}
 		}
 	}
 	
 	//x and y pos in the slide signify where the slide starts
 	public void MakeSlide(int slideLen, int slideColor, int xpos, int ypos, GridBagConstraints gbc){
-		
 		if(slideColor == 0){
 			gbc.gridy = 0;
-		}
-		if(slideColor == 1){
-			gbc.gridx = 15; 
-		}
-		if(slideColor == 2){
-			gbc.gridy = 15; 
-		}
-		if(slideColor == 3){
-			gbc.gridx = 0;
-		}
-	
-		if(slideColor == 0 || slideColor == 2){
 			for(int i = xpos; i < xpos + slideLen; i++){
 				gbc.gridx = i;
 				SlideButton sb = new SlideButton(slideColor);
-				gamePanel.add(sb, gbc);	
+				gamePanel.add(sb, gbc);
+				spaceTiles.addTilesToLoop(sb, slideColor);
 			}
 		}
-		if(slideColor == 1 || slideColor == 3){
+		if(slideColor == 1){
+			gbc.gridx = 15; 
 			for(int i = ypos; i < ypos + slideLen; i++){
 				gbc.gridy = i;
 				SlideButton sb = new SlideButton(slideColor);
-				gamePanel.add(sb, gbc);			
+				gamePanel.add(sb, gbc);
+				spaceTiles.addTilesToLoop(sb, slideColor);
 			}
-		}	
+		}
+		if(slideColor == 2){
+			gbc.gridy = 15; 
+			for(int i = (slideLen + xpos); i > xpos; i--){
+				gbc.gridx = i; 
+				SlideButton sb = new SlideButton(slideColor);
+				gamePanel.add(sb, gbc);
+				spaceTiles.addTilesToLoop(sb, slideColor);
+				
+			}
+		}
+		if(slideColor == 3){
+			gbc.gridx = 0;
+			for(int i = (slideLen + ypos); i > ypos; i--){
+				gbc.gridy = i; 
+				SlideButton sb = new SlideButton(slideColor);
+				gamePanel.add(sb, gbc);
+				spaceTiles.addTilesToLoop(sb, slideColor);
+				
+			}
+		}
 	}
 	//makes yellow side of the board
 	public void createYellow(){
@@ -102,6 +112,7 @@ public class gameManager{
 		gbcY.gridx = 0; 
 		gbcY.gridy = 0;
 		gamePanel.add(b, gbcY);
+		spaceTiles.addTilesToLoop(b, 4);
 		
 		MakeSlide(4, 0, 1, 0, gbcY);
 		
@@ -112,12 +123,14 @@ public class gameManager{
 		gbcStart.gridy = 1;
 		StartButton sb = new StartButton(0);
 		gamePanel.add(sb, gbcStart);
+		spaceTiles.addTilesToStart(sb, 0);
 		//end of make startbutton
 		
 		for(int i = 0; i < 4; i++){
 			BlackButton b1 = new BlackButton();
 			gbcY.gridx = 5+i;
 			gamePanel.add(b1,gbcY);
+			spaceTiles.addTilesToLoop(b1, 4);
 		}
 		MakeSlide(5, 0, 9, 0, gbcY);
 		
@@ -125,6 +138,7 @@ public class gameManager{
 		gbcY.gridx = 14; 
 		gbcY.gridy = 0;
 		gamePanel.add(b2, gbcY);
+		spaceTiles.addTilesToLoop(b2, 4);
 	}
 	//makes green side of the board
 	public void createGreen(){
@@ -134,6 +148,7 @@ public class gameManager{
 		gbcG.gridx = 15; 
 		gbcG.gridy = 0;
 		gamePanel.add(b,gbcG);
+		spaceTiles.addTilesToLoop(b, 4);
 		
 		MakeSlide(4, 1, 15, 1, gbcG);
 		
@@ -144,12 +159,14 @@ public class gameManager{
 		gbcStart.gridy = 4;
 		StartButton sb = new StartButton(1);
 		gamePanel.add(sb, gbcStart);
+		spaceTiles.addTilesToStart(sb, 1);
 		//end of make startbutton
 		
 		for(int i = 0; i < 4; i++){
 			BlackButton b1 = new BlackButton();
 			gbcG.gridy = 5+i;
 			gamePanel.add(b1, gbcG);
+			spaceTiles.addTilesToLoop(b1, 4);
 		}
 		MakeSlide(5, 1, 15, 9, gbcG);
 		
@@ -157,6 +174,7 @@ public class gameManager{
 		gbcG.gridx = 15; 
 		gbcG.gridy = 14;
 		gamePanel.add(b2, gbcG);
+		spaceTiles.addTilesToLoop(b2, 4);
 	}
 	
 	//makes red side of the board
@@ -167,8 +185,10 @@ public class gameManager{
 		gbcR.gridx = 15; 
 		gbcR.gridy = 15;
 		gamePanel.add(b,gbcR);
+		spaceTiles.addTilesToLoop(b, 4);
+
 		
-		MakeSlide(4, 2, 11, 15, gbcR); // this is made going forward even tho the rest is made going backwards... 
+		MakeSlide(4, 2, 10, 15, gbcR); // this is made going forward even tho the rest is made going backwards... 
 		
 		makeHomeBase(2);
 		//make startbutton
@@ -177,19 +197,24 @@ public class gameManager{
 		gbcStart.gridy = 14;
 		StartButton sb = new StartButton(2);
 		gamePanel.add(sb, gbcStart);
+		spaceTiles.addTilesToStart(sb, 2);
 		//end of make startbutton
 		
 		for(int i = 0; i < 4; i++){
 			BlackButton b1 = new BlackButton();
 			gbcR.gridx = 10-i;
 			gamePanel.add(b1, gbcR);
+			spaceTiles.addTilesToLoop(b1, 4);
+
 		}
-		MakeSlide(5, 2, 2, 15, gbcR);
+		MakeSlide(5, 2, 1, 15, gbcR);
 		
-		BlackButton b2 = new BlackButton();
+		BlackButton b2 = new BlackButton(); 
 		gbcR.gridx = 1; 
 		gbcR.gridy = 15;
 		gamePanel.add(b2, gbcR);
+		spaceTiles.addTilesToLoop(b2, 4);
+
 	}
 	//makes blue side of the board
 	public void createBlue(){
@@ -199,8 +224,9 @@ public class gameManager{
 		gbcB.gridx = 0;
 		gbcB.gridy = 15;
 		gamePanel.add(b,gbcB);
+		spaceTiles.addTilesToLoop(b, 4);
 		
-		MakeSlide(4, 3, 0, 11, gbcB); // this is made going forward even tho the rest is made going backwards... 
+		MakeSlide(4, 3, 0, 10, gbcB); // this is made going forward even tho the rest is made going backwards... 
 		
 		makeHomeBase(3);
 		//make startbutton
@@ -209,23 +235,28 @@ public class gameManager{
 		gbcStart.gridy = 11;
 		StartButton sb = new StartButton(3);
 		gamePanel.add(sb, gbcStart);
+		spaceTiles.addTilesToStart(sb, 3);
 		//end of make startbutton
 		
 		for(int i = 0; i < 4; i++){
 			BlackButton b1 = new BlackButton();
 			gbcB.gridy = 10-i;
 			gamePanel.add(b1, gbcB);
+			spaceTiles.addTilesToLoop(b1, 4);
 		}
-		MakeSlide(5, 3, 0, 2, gbcB);
+		MakeSlide(5, 3, 0, 1, gbcB);
 		
 		BlackButton b2 = new BlackButton();
 		gbcB.gridx = 0; 
 		gbcB.gridy = 1;
 		gamePanel.add(b2, gbcB);
+		spaceTiles.addTilesToLoop(b2, 4);
 	}
 	
 	//manages board creation
 	public void createBoard(){
+		
+		spaceTiles = new Tiles();
 		
 		createYellow(); //creating Yellow side
 		createGreen(); //creating Green side
@@ -244,6 +275,8 @@ public class gameManager{
 		Border b = new LineBorder(Color.GRAY, 2);
 		cardDeckButton.setBorder(b);
 		gamePanel.add(cardDeckButton, gbcCardDeck);
+		
+		Play p = new Play();
 
 	}
 	
@@ -256,22 +289,5 @@ public class gameManager{
 
 }
 
-/*
-LETS THINK ABOUT THE BOARD:
-starts w/back
-then 4 colored slide pieces
-- the 2nd of these has 6 coming off of it. the last being "home"
-- the 4th of these has one coming off of it, being "start"
-then 4 black
-then 5 colored slide pieces
-then 1 black
-
-TYPES OF BUTTONS:
-start
-home base, leading to home
-slide
-black
-
-*/
 
 

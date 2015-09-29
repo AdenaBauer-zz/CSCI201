@@ -1,0 +1,35 @@
+import javax.swing.JButton;
+
+public class Tiles {
+	
+	JButton[] boardLoop;
+	int [] colors;
+	int counter; 
+	
+	/*
+	 * yellow = 0
+	 * green = 1
+	 * red = 2
+	 * blue = 3
+	 * black = 4
+	 */
+		
+	public Tiles(){
+		boardLoop = new JButton[60];
+		colors = new int[60];
+		counter = 0; 
+	}
+
+	
+	public void addTilesToLoop(JButton b, int color){
+		
+		boardLoop[counter] = b;
+		colors[counter] = color;
+				
+		b.setText(Integer.toString(counter));
+
+		counter =+ 1;
+	}
+	
+}
+

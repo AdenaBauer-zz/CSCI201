@@ -1,0 +1,12 @@
+import java.util.Arrays;
+
+public class Cards {
+	static String deck[];
+	static int leftInDeck[];
+	
+	public Cards(){
+		deck = new String[13];
+		leftInDeck = new int [13];
+		Arrays.fill(deck, 4);
+	}
+}

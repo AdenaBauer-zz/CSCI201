@@ -19,10 +19,10 @@ public class Sorry extends JFrame {
 	JLabel sorryLabel; //this becomes the label for numPlayers, and chooseColor
 	JButton startButton, confirmButton, colorConfirmButton;
 	ButtonGroup numPlayersRadio, colorBG;
-	JRadioButton two, three, four;
-	JButton red, green, blue, yellow;
+	static JRadioButton two, three, four;
+	static JButton red, green, blue, yellow;
 	gameManager gm; 
-
+	
 	public void playGame(){
 		p.removeAll();
 		

@@ -1,0 +1,12 @@
+import javax.swing.JButton;
+
+public class Tiles {
+	
+	JButton boardLoop;
+	
+	public Tiles(){
+		boardLoop = new JButton[60];
+	}
+	
+}
+
