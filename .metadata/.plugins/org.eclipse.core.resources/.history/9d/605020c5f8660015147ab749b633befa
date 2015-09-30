@@ -1,0 +1,39 @@
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+public class Player {
+	int playerColor;
+	JButton[] currentSpaces;
+	boolean playerWon;
+	ImageIcon playerPawnImage;
+	int numOnStart;
+	int numAtHome;
+	
+	public Player(int color){
+		currentSpaces = new JButton [4];
+		playerWon = false;
+		playerColor = color;
+		addPlayerPawnImage();
+	}
+	
+	public void goToStart(int pon){
+		currentSpaces[pon] = Tiles.startButtons[playerColor];
+	}
+	
+	public void addPlayerPawnImage(){
+		if (playerColor == 0){
+			playerPawnImage = new ImageIcon("Resources/yellow.png");
+		}
+		if(playerColor == 1){
+			playerPawnImage = new ImageIcon("Resources/green.png");
+		}
+		if(playerColor == 2){
+			playerPawnImage = new ImageIcon("Resources/red.png");
+		}
+		if(playerColor == 3){
+			playerPawnImage = new ImageIcon("Resources/blue.png");
+		}
+	}
+	
+	
+}

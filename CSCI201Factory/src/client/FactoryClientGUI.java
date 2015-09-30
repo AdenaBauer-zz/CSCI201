@@ -97,7 +97,7 @@ public class FactoryClientGUI extends JFrame {
 		
 		Box bottomBox = Box.createHorizontalBox();
 		bottomBox.add(messageTextAreaScrollPane);
-		//bottomBox.add(simulationSpeedController);
+		bottomBox.add(new FactoryProgressPanel(productTable));
 		
 		add(factoryPanel,BorderLayout.CENTER);
 		add(bottomBox, BorderLayout.SOUTH);

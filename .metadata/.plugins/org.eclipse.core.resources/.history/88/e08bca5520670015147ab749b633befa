@@ -1,0 +1,91 @@
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class Play extends JFrame{
+	
+	int numPlayers;
+	int humanPlayerColor;
+	static int []numOnHome;
+	static int []numOnStart;
+	Player currentPlayerTurn;
+	int turns;
+	Cards deck;
+	
+	Player[] players;//index zero will always be the human player
+	
+	public Play(){
+		initializePlayers();
+		initializeStarting();
+		deck = new Cards();
+		turns = 0;
+	}
+	public void turn(){
+		System.out.print("turn 30");
+		int playerTurn = turns % numPlayers;
+		currentPlayerTurn = players[playerTurn];
+			
+		//int card = deck.drawCard();
+		int card = 1;
+		deck.cardFunctionalityManager(card, currentPlayerTurn);
+		turns++;			
+	}
+	
+	public void initializePlayers(){
+		setNumAndColor();
+		players = new Player[numPlayers];
+		numOnHome = new int[numPlayers];
+		numOnStart = new int [numPlayers];
+		int secondColor;
+		if(humanPlayerColor == 0 || humanPlayerColor == 1){
+			secondColor = humanPlayerColor + 2;
+		}
+		else{
+			secondColor = humanPlayerColor - 2;
+		}
+		players[0] = new Player(humanPlayerColor);
+		players[1] = new Player(secondColor);
+		int thirdC = 0;
+		int forthC = 0;
+		
+		if(numPlayers >= 3){
+			for(int i = 0; i < 4; i++){
+				if (i != secondColor && i != humanPlayerColor){
+					thirdC = i;
+					players[2] = new Player(thirdC);
+				}
+			}
+		}	
+		if(numPlayers == 4){
+			for(int i = 0; i < 4; i++){
+				if(i != humanPlayerColor && i != secondColor && i != thirdC){
+					forthC = i;
+					players[3] = new Player (forthC);
+				}
+			}
+		}
+	}
+	
+	public void initializeStarting(){
+		
+		for(int i = 0; i < numPlayers; i++){
+			int c = players[i].playerColor;
+			numOnHome[i] = 0;
+			numOnStart[i] = 4;
+			gameManager.homeLabels[c].setText(Integer.toString(numOnHome[i]));
+			gameManager.startLabels[c].setText(Integer.toString(numOnStart[i]));
+		}
+	}
+	
+	public void setNumAndColor(){
+		humanPlayerColor = Sorry.humanColor;
+		numPlayers = Sorry.playerNum;
+	}
+
+}

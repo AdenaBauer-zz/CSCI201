@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -68,8 +69,12 @@ public class FactoryWorker extends FactoryObject implements Runnable, FactoryRep
 				if(!mShortestPath.isEmpty()) {
 					//if we have somewhere else to go, save that location
 					mNextNode = mShortestPath.pop();
+					mCurrentNode.unMark();
 				}//if we arrived at the location, signal the worker thread so they can do more actions
-				if(mCurrentNode == mDestinationNode) atLocation.signal();
+				if(mCurrentNode == mDestinationNode){
+					mDestinationNode.unMark();
+					atLocation.signal();
+				}
 			}
 		}
 		mLock.unlock();

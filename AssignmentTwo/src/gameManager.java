@@ -3,7 +3,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -15,12 +17,75 @@ public class gameManager{
 	static JButton cardDeckButton;
 	static Tiles spaceTiles; 
 	static JPanel gamePanel;
+	static HomeStartButtons[] homeLabels;
+	static HomeStartButtons[] startLabels;
+	Play play;
+	static Player [] players;
+
 	
 	/* 0 = yellow
 	 * 1 = green
 	 * 2 = red
 	 * 3 = blue
 	 */
+	
+	public void numOnStartAndHome(){
+		//STARTLABELS
+		
+		//yellowStartLabel
+		HomeStartButtons start = new HomeStartButtons();
+		GridBagConstraints gbcStart = new GridBagConstraints();
+		gbcStart.gridx = 4;
+		gbcStart.gridy = 2;
+		gamePanel.add(start,gbcStart);
+		startLabels[0] = start;
+		//greenStartLabel
+		HomeStartButtons start1 = new HomeStartButtons();
+		gbcStart.gridx = 13;
+		gbcStart.gridy = 4;
+		gamePanel.add(start1,gbcStart);
+		startLabels[1] = start1;
+		//redStartLabel
+		HomeStartButtons start2 = new HomeStartButtons();
+		gbcStart.gridx = 11;
+		gbcStart.gridy = 13;
+		gamePanel.add(start2,gbcStart);
+		startLabels[2] = start2;
+		//blueStartLabel
+		HomeStartButtons start3 = new HomeStartButtons();
+		gbcStart.gridx = 2;
+		gbcStart.gridy = 11;
+		gamePanel.add(start3,gbcStart);
+		startLabels[3] = start3;
+		
+		//HOME LABELS
+		//yellowHomeLabel
+		HomeStartButtons home = new HomeStartButtons();
+		GridBagConstraints gbcHome = new GridBagConstraints();
+		gbcHome.gridx = 2;
+		gbcHome.gridy = 7;
+		gamePanel.add(home,gbcHome);
+		homeLabels[0] = home;
+		//greenHomeLabel
+		HomeStartButtons home1 = new HomeStartButtons();
+		gbcHome.gridx = 8;
+		gbcHome.gridy = 2;
+		gamePanel.add(home1,gbcHome);
+		homeLabels[1] = home1;
+		//redHomeLabel
+		HomeStartButtons home2 = new HomeStartButtons();
+		gbcHome.gridx = 13;
+		gbcHome.gridy = 8;
+		gamePanel.add(home2,gbcHome);
+		homeLabels[2] = home2;
+		//blueHomeLabel
+		HomeStartButtons home3 = new HomeStartButtons();
+		gbcHome.gridx = 7;
+		gbcHome.gridy = 13;
+		gamePanel.add(home3,gbcHome);
+		homeLabels[3] = home3;	
+	
+	}
 	public void makeHomeBase(int color){
 		GridBagConstraints gbcHome = new GridBagConstraints();
 		if (color == 0){
@@ -263,11 +328,24 @@ public class gameManager{
 		createRed(); //creating Red side
 		createBlue(); //creating Blue side
 		
+		numOnStartAndHome();
+		play = new Play();		
+
 		//card deck button  
 		GridBagConstraints gbcCardDeck = new GridBagConstraints();
 		gbcCardDeck.gridx = 8;
 		gbcCardDeck.gridy = 8;
-		cardDeckButton = new JButton("Cards");
+		cardDeckButton = new JButton(new AbstractAction("Cards"){
+			private static final long serialVersionUID = 1L;
+			public void actionPerformed(ActionEvent e){
+			
+				while(true)
+					if(play.turn() == -1){
+						break;
+					}
+				}
+			
+			});		
 		cardDeckButton.setFont(new Font("Arial", Font.PLAIN, 8));
 		cardDeckButton.setOpaque(true);
 		cardDeckButton.setMinimumSize(new Dimension(30, 25));
@@ -276,11 +354,12 @@ public class gameManager{
 		cardDeckButton.setBorder(b);
 		gamePanel.add(cardDeckButton, gbcCardDeck);
 		
-		Play p = new Play();
-
+		
 	}
 	
 	public gameManager(JPanel p){
+		startLabels = new HomeStartButtons[4];
+		homeLabels = new HomeStartButtons[4];
 		gamePanel = p;
 		gamePanel.setLayout(new GridBagLayout());
 		createBoard();

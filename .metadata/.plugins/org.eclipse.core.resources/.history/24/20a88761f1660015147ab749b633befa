@@ -1,0 +1,14 @@
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
+
+public class FactoryProgressPanel extends JPanel{
+	
+	private JTable mTable;
+	private TableModel mModel;
+	
+	FactoryProgressPanel(JTable inTable){
+		mTable = inTable;
+		mModel = mTable.getModel();	
+	}
+}

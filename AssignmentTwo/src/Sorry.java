@@ -21,7 +21,11 @@ public class Sorry extends JFrame {
 	ButtonGroup numPlayersRadio, colorBG;
 	static JRadioButton two, three, four;
 	static JButton red, green, blue, yellow;
-	gameManager gm; 
+	gameManager gm;
+	static public int humanColor;
+	static public int playerNum;
+	
+	
 	
 	public void playGame(){
 		p.removeAll();
@@ -74,6 +78,7 @@ public class Sorry extends JFrame {
 		colorConfirmButton = new JButton(new AbstractAction("Confirm"){
 			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent e){
+				 
 				playGame();
 			}
 		});
@@ -88,6 +93,8 @@ public class Sorry extends JFrame {
 				blue.setForeground(Color.BLACK);
 				yellow.setForeground(Color.BLACK);
 				green.setForeground(Color.BLACK);
+				
+				humanColor = 2;
 			}
 		});
 		green.addActionListener(new ActionListener(){
@@ -98,6 +105,8 @@ public class Sorry extends JFrame {
 				red.setForeground(Color.BLACK);
 				yellow.setForeground(Color.BLACK);
 				blue.setForeground(Color.BLACK);
+				
+				humanColor = 1;
 
 			}
 		});
@@ -109,6 +118,9 @@ public class Sorry extends JFrame {
 				red.setForeground(Color.BLACK);
 				yellow.setForeground(Color.BLACK);
 				green.setForeground(Color.BLACK);
+				
+				humanColor = 3;
+				
 			}
 		});
 		yellow.addActionListener(new ActionListener(){
@@ -119,6 +131,8 @@ public class Sorry extends JFrame {
 				red.setForeground(Color.BLACK);
 				blue.setForeground(Color.BLACK);
 				green.setForeground(Color.BLACK);
+				
+				humanColor = 0;
 
 			}
 		});
@@ -154,6 +168,7 @@ public class Sorry extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				if(two.isSelected()){
 					confirmButton.setEnabled(true);
+					playerNum = 2;
 				}
 			}
 		});
@@ -161,6 +176,7 @@ public class Sorry extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				if(three.isSelected()){
 					confirmButton.setEnabled(true);
+					playerNum = 3;
 				}
 			}
 		});
@@ -168,6 +184,7 @@ public class Sorry extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				if(four.isSelected()){
 					confirmButton.setEnabled(true);
+					playerNum = 4;
 				}
 			}
 		});

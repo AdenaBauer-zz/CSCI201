@@ -1,0 +1,22 @@
+import javax.swing.JButton;
+
+public class Player {
+	int playerColor;
+	JButton[] currentSpaces;
+	boolean playerWon;
+	
+	public Player(){
+		currentSpaces = new JButton [4];
+		playerWon = false;
+	}
+	
+	public void setColor(int c){
+		playerColor = c;
+	}
+	
+	public void goToStart(int pon){
+		currentSpaces[pon] = Tiles.startButtons[playerColor];
+	}
+	
+	
+}

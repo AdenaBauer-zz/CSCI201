@@ -1,17 +1,55 @@
+import java.awt.event.ActionEvent;
 
-public class Play {
+import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class Play extends JFrame{
 	
 	int numPlayers;
 	int humanPlayerColor;
-	Player [] players;//index zero will always be the human player
+	static int []numOnHome;
+	static int []numOnStart;
+	Player currentPlayerTurn;
+	int turns;
+	Cards deck;
+	
+	Player[] players;//index zero will always be the human player
 	
 	public Play(){
 		initializePlayers();
-		manageGame();
+		initializeStarting();
+		deck = new Cards();
+		turns = 0;
 	}
+	public int turn(){
+		int playerTurn = turns % numPlayers;
+		currentPlayerTurn = players[playerTurn];
+			
+		int card = deck.drawCard();
+		deck.cardFunctionalityManager(card, currentPlayerTurn);
+		turns++;
+		return checkWinner();
+	}
+	
+	public int checkWinner(){
+		for(int i = 0; i < numPlayers; i++){
+			if(players[i].playerWon == true){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	public void initializePlayers(){
 		setNumAndColor();
-		
+		players = new Player[numPlayers];
+		numOnHome = new int[numPlayers];
+		numOnStart = new int [numPlayers];
 		int secondColor;
 		if(humanPlayerColor == 0 || humanPlayerColor == 1){
 			secondColor = humanPlayerColor + 2;
@@ -24,16 +62,14 @@ public class Play {
 		int thirdC = 0;
 		int forthC = 0;
 		
-		if(numPlayers >=3){
+		if(numPlayers >= 3){
 			for(int i = 0; i < 4; i++){
 				if (i != secondColor && i != humanPlayerColor){
 					thirdC = i;
 					players[2] = new Player(thirdC);
 				}
 			}
-			
-		}
-		
+		}	
 		if(numPlayers == 4){
 			for(int i = 0; i < 4; i++){
 				if(i != humanPlayerColor && i != secondColor && i != thirdC){
@@ -42,44 +78,22 @@ public class Play {
 				}
 			}
 		}
-	
 	}
 	
-	public void manageGame(){
-		putPlayersOnBoard();
-
-	}
-	
-	public void putPlayersOnBoard(){
+	public void initializeStarting(){
 		
 		for(int i = 0; i < numPlayers; i++){
-			
+			int c = players[i].playerColor;
+			numOnHome[i] = 0;
+			numOnStart[i] = 4;
+			gameManager.homeLabels[c].setText(Integer.toString(numOnHome[i]));
+			gameManager.startLabels[c].setText(Integer.toString(numOnStart[i]));
 		}
-		
 	}
 	
 	public void setNumAndColor(){
-		if(Sorry.two.isSelected()){
-			numPlayers = 2;
-		}
-		if(Sorry.three.isSelected()){
-			numPlayers = 3;
-		}
-		if(Sorry.four.isSelected()){
-			numPlayers = 4; 
-		}
-		if(Sorry.yellow.isSelected()){
-			humanPlayerColor = 0;
-		}
-		if(Sorry.green.isSelected()){
-			humanPlayerColor = 1;
-		}
-		if(Sorry.red.isSelected()){
-			humanPlayerColor = 2;
-		}
-		if(Sorry.blue.isSelected()){
-			humanPlayerColor = 3;
-		}	
+		humanPlayerColor = Sorry.humanColor;
+		numPlayers = Sorry.playerNum;
 	}
 
 }

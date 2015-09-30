@@ -1,0 +1,64 @@
+import javax.swing.ImageIcon;
+
+public class Play {
+	
+	
+	int numPlayers;
+	int humanPlayerColor;
+	Player[] players;//index zero will always be the human player
+	
+	public Play(){
+		players = new Player[4];
+		initializePlayers();
+		manageGame();
+	}
+	public void initializePlayers(){
+		setNumAndColor();
+		System.out.print("humanPlayer: " + humanPlayerColor);
+		int secondColor;
+		if(humanPlayerColor == 0 || humanPlayerColor == 1){
+			secondColor = humanPlayerColor + 2;
+		}
+		else{
+			secondColor = humanPlayerColor - 2;
+		}
+		players[0] = new Player(humanPlayerColor);
+		players[1] = new Player(secondColor);
+		int thirdC = 0;
+		int forthC = 0;
+		
+		if(numPlayers >= 3){
+			for(int i = 0; i < 4; i++){
+				if (i != secondColor && i != humanPlayerColor){
+					thirdC = i;
+					players[2] = new Player(thirdC);
+				}
+			}
+		}	
+		if(numPlayers == 4){
+			for(int i = 0; i < 4; i++){
+				if(i != humanPlayerColor && i != secondColor && i != thirdC){
+					forthC = i;
+					players[3] = new Player (forthC);
+				}
+			}
+		}
+	}
+	
+	public void manageGame(){
+		
+		//Tiles.startButtons[color].setIcon(players[i].playerPawnImage);
+		getOutofStart()
+
+	}
+	
+	public void updateStartNum(){
+		
+	}
+	
+	public void setNumAndColor(){
+		humanPlayerColor = Sorry.humanColor;
+		numPlayers = Sorry.playerNum;
+	}
+
+}
