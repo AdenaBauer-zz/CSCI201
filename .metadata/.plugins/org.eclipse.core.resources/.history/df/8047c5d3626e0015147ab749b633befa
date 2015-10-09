@@ -1,0 +1,56 @@
+package sorryclient;
+
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+/*
+ * MainMenu
+ * Menu to hold the start button
+ * */
+public class MainMenu extends JPanel{
+	private static final long serialVersionUID = 3609831945869059312L;
+	
+	private final JButton start;
+	private final String menuTitleString = "Sorry!";
+	
+	public MainMenu(ActionListener startAction){
+		start = new JButton("Start");
+		start.addActionListener(startAction);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		GridBagLayout gblayout = new GridBagLayout();
+
+		try{
+			URL fontUrl = new URL("src/imgs/kenvector_future_thin.ttf");
+		        Font font = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
+		        font = font.deriveFont(Font.PLAIN,20);
+		        start.setFont(font);
+		}
+		catch(Exception e){
+			System.out.print("in exception");
+		}
+		start.setFont(new Font("src/imgs/kenvector_future.ttf", Font.PLAIN, 20));
+		
+		setLayout(gblayout);
+		
+		ImageIcon icon = new ImageIcon("src/imgs/sorry.png");
+
+		JLabel sorryPic = new JLabel();
+		sorryPic.setIcon(icon);
+		
+		add(sorryPic, gbc);
+		
+		gbc.gridy = 4;
+		add(start,gbc);
+	}
+	
+}

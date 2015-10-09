@@ -1,0 +1,31 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class InterviewPractice {
+	
+	
+	public static String reverseString(String str){
+
+		StringBuffer endingStr;
+		Character currChar =  str.charAt(0);
+
+		while(currChar != null){
+			currChar = str.charAt(str.length() -1);
+			endingStr.append(currChar);
+			str = str.substring(0, str.length()-1 -1);
+		//subtracts 1 from the length to shorten str, subtracts again bc indices zero based
+		}
+		return endingStr.toString();
+	}
+
+	
+	public static void main(String [] args){
+		
+		String s = reverseString("hithere");
+
+		System.out.print(s);
+
+	}
+	
+}
+

@@ -1,0 +1,34 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class InterviewPractice {
+private static StringBuffer endingStr;
+
+public static String removeDups(String str){
+
+	Map<Character, Integer> map = new HashMap<Character, Integer>();
+	StringBuilder s = new StringBuilder(str);
+	
+	for(int i = 0; i < s.length(); i ++){
+		Character c = s.charAt(i);
+		if(!map.containsKey(c)){
+			map.put(c, 1);
+		}
+		else{
+			s.deleteCharAt(i);
+		}
+	}
+	return s.toString();
+}
+
+
+public static void main(String [] args){
+		
+		String s = removeDups("adena");
+
+		System.out.print(s);
+
+	}
+	
+}
+
