@@ -2,14 +2,22 @@ package sorryclient;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +37,7 @@ public class ColorSelector extends JPanel {
 	private final JButton[] optionButtons;
 	
 	private final JButton confirmButton;
+	BufferedImage buttonIcon;
 	
 	private final static String selectColorString = "Select your color";
 	
@@ -43,25 +52,62 @@ public class ColorSelector extends JPanel {
 	}
 	
 	public ColorSelector(ActionListener confirmAction) {
+		//font
+		Font font = new Font("Calibri", Font.BOLD, 14);
+	    try{
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("src/imgs/kenvector_future.ttf")).deriveFont(Font.PLAIN, 20);;
+		}
+		catch(Exception e){
+			System.out.print("font error thrown");
+		}
+		
 		//set up the button so we can proceed
-		confirmButton = new JButton("Confirm");
-		confirmButton.addActionListener(confirmAction);
+	    BufferedImage [] colorButtonIcons = new BufferedImage[4];
+		try{
+			buttonIcon = ImageIO.read(new File("src/imgs/grey_button00.png"));   
+			colorButtonIcons[0] = ImageIO.read(new File("src/imgs/red_button00.png"));
+			colorButtonIcons[1] = ImageIO.read(new File("src/imgs/blue_button00.png"));
+			colorButtonIcons[2] = ImageIO.read(new File("src/imgs/green_button00.png"));
+			colorButtonIcons[3] = ImageIO.read(new File("src/imgs/yellow_button00.png"));
+
+		}
+		catch(Exception e){
+			System.out.print("button image threw exception");
+		}
+		
+		confirmButton = new JButton(new ImageIcon(buttonIcon));
+		confirmButton.setText("Confirm");
+		confirmButton.setHorizontalTextPosition(JButton.CENTER);
+		confirmButton.setVerticalTextPosition(JButton.CENTER);
+		confirmButton.setBorderPainted(false);
+	    
+	    confirmButton.addActionListener(confirmAction);
 		confirmButton.setEnabled(false);
+		confirmButton.setFont(font);
+		
+		//cursor
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+	    Image image = toolkit.getImage("src/imgs/cursorHand_grey.png");
+	    Cursor c = toolkit.createCustomCursor(image , new Point(this.getX(), 
+	    this.getY()), "img");
+	    this.setCursor (c);
 		
 		//The top of the panel, the label
 		JLabel selectPlayerLabel = new JLabel(selectColorString);
-		selectPlayerLabel.setFont(new Font("",Font.BOLD,36));
+		selectPlayerLabel.setFont(font);
 		
 		JPanel topPanel = new JPanel();
 		topPanel.add(selectPlayerLabel);
 		
 		//The middle of the panel, the color buttons
 		JPanel centerPanel = new JPanel(new GridLayout(2,2,20,20));
-		Font buttonFont = new Font("",Font.BOLD,22);
 		optionButtons = new JButton[numOptions];
 		for(int i = 0; i < numOptions; ++i) {
-			optionButtons[i] = new JButton(colorNames[i]);
-			optionButtons[i].setBackground(colors[i]);
+			optionButtons[i] = new JButton(new ImageIcon(colorButtonIcons[i]));
+			optionButtons[i].setText(colorNames[i]);
+			optionButtons[i].setHorizontalTextPosition(JButton.CENTER);
+			optionButtons[i].setVerticalTextPosition(JButton.CENTER);
+			optionButtons[i].setBorderPainted(false);
 			final int buttonSelection = i;
 			optionButtons[i].addActionListener(new ActionListener() {
 				@Override
@@ -72,7 +118,7 @@ public class ColorSelector extends JPanel {
 					confirmButton.setEnabled(true);
 				}
 			});
-			optionButtons[i].setFont(buttonFont);
+			optionButtons[i].setFont(font);
 			centerPanel.add(optionButtons[i]);
 		}
 		centerPanel.setBorder(new EmptyBorder(spacing));

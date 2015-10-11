@@ -53,7 +53,7 @@ public class MainMenu extends JPanel{
 		GridBagConstraints gbc = new GridBagConstraints();
 		GridBagLayout gblayout = new GridBagLayout();
 		try{
-			Font font = Font.createFont(Font.TRUETYPE_FONT, new File("src/imgs/kenvector_future.ttf")).deriveFont(Font.PLAIN, 14);;
+			Font font = Font.createFont(Font.TRUETYPE_FONT, new File("src/imgs/kenvector_future.ttf")).deriveFont(Font.PLAIN, 14);
 			start.setFont(font);
 		}
 		catch(Exception e){

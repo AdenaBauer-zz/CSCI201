@@ -62,8 +62,10 @@ public class ClientPanel extends JPanel {
 					colorSelect.getPlayerColor(), 
 					numPlayerSelect.getNumberOfPlayers()
 				);
+				
 				//set the panel to the game
 				ClientPanel.this.add(gamePanel);
+								
 				ClientPanel.this.revalidate();
 			}
 		});

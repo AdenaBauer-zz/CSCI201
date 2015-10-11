@@ -2,13 +2,21 @@ package sorryclient;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,11 +36,16 @@ public class GamePanel extends JPanel {
 	
 	//A grid to hold all the tiles in the game
 	private final static int boardSize = 16;
+
 	private final TilePanel[][] tileGrid;
 	
 	//The card button for the game
 	private final JButton cardButton;
 	private final JLabel cardLabel;
+	BufferedImage cardButtonIcon;
+	ImageIcon icon;
+	Image scaledImage = null;
+
 	
 	//The game manager that runs the actual logic
 	private final GameManager mGameManager;
@@ -42,7 +55,17 @@ public class GamePanel extends JPanel {
 	
 	{
 		//Create and set-up the card button
-		cardButton = new JButton();
+		try{
+			
+			cardButtonIcon = ImageIO.read(new File("src/imgs/cardBack_red.png")); 
+			//scaledImage = cardButtonIcon.getScaledInstance(this.getWidth(),this.getHeight(),Image.SCALE_AREA_AVERAGING);
+			//icon.setImage(scaledImage);
+		}
+		catch(Exception e){
+			System.out.print("button image threw exception");
+		}
+			
+		cardButton = new JButton(new ImageIcon(cardButtonIcon));
 		cardButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -51,6 +74,7 @@ public class GamePanel extends JPanel {
 			}
 		});
 		cardLabel = new JLabel("Cards:");
+		cardButton.setBorderPainted(false);
 	}
 	
 	public GamePanel(ActionListener inQuitAction, GameManager inGameManager){
@@ -112,17 +136,26 @@ public class GamePanel extends JPanel {
 		
 		private JPanel pawn = new JPanel();
 		private boolean pawnDisplayed = false;
+		public Color color;
 		
 		TilePanel(Tile tile) {
 			mTile = tile;
 			//Used to keep track what component should be displayed
 			components = new Stack<Component>();
-			
 			//If we are a meaningful tile in the game
 			if(mTile != null) {
-				setBorder(new LineBorder(mTile.getColor()));
+				color = mTile.getColor();		
+				//setBorder(new LineBorder(mTile.getColor()));
 				//Set any special looks based on the tiles properties
-				if(mTile.doesSlide()) components.push(new JLabel(GameHelpers.getSlideLabelFromColor(mTile.getColor())));
+				BufferedImage slideIcon = null;
+				
+				try{
+					slideIcon = ImageIO.read(new File(GameHelpers.getSlideLabelFromColor(mTile.getColor())));
+				}
+				catch(Exception e){
+					System.out.print("slideIcon didnt work");
+				}
+				if(mTile.doesSlide()) components.push(new JLabel(new ImageIcon (slideIcon)));
 				if(mTile.isStart()) components.push(new JLabel("Start"));
 				if(mTile.isHome()) components.push(new JLabel("Home"));
 				
@@ -135,8 +168,64 @@ public class GamePanel extends JPanel {
 					}
 				});
 			}
-		}
+		}	
 		
+		public void paintComponent(Graphics g) {
+		
+				 
+			super.paintComponent(g);
+			String s = null;
+			boolean shouldBePainted = true;
+			Image scaledImage = null;
+			if(color == Color.BLUE){
+				s = "src/imgs/blue_tile.png";
+				System.out.println("blue!");
+			}
+			else if(color == Color.YELLOW){
+				s = "src/imgs/yellow_tile.png";
+				System.out.println("yellow!");
+
+			}
+			else if(color == Color.GREEN){
+				s = "src/imgs/green_tile.png";
+				System.out.println("green!");
+
+			}
+			else if(color == Color.RED){
+				s = "src/imgs/red_tile.png";
+				System.out.println("red!");
+
+			}
+			else if(color == Color.BLACK){
+				s = "src/imgs/grey_tile.png";
+				System.out.println("black");
+			}
+			else{
+				System.out.println("other :(   ");
+				shouldBePainted = false;
+			}
+				
+			if(shouldBePainted == true){
+				BufferedImage img = null;
+				//String s = GameHelpers.getIconFromIndex(GameHelpers.getIndexFromColor(mTile.getColor()));
+			
+				try{
+					System.out.println(s);
+					img = ImageIO.read(new File(s));
+					scaledImage = img.getScaledInstance(this.getWidth(),this.getHeight(),Image.SCALE_SMOOTH);
+
+				} 
+				catch (IOException e) {
+					e.printStackTrace();
+					System.out.println("didnt work");
+
+				}
+					g.drawImage(scaledImage, 0, 0, null);
+				
+			}
+		  
+		}
+
 		//Update the tile based on its properties
 		protected void update() {
 			if(mTile == null) return;
@@ -173,7 +262,7 @@ public class GamePanel extends JPanel {
 		protected void update() {
 			mLabel.setText(mGameManager.getPlayerStartCount(mPlayerNum));
 		}
-	}
+	}	
 	
 	//Used for the home counter display
 	class HomeLabelPanel extends TilePanel{
@@ -206,4 +295,5 @@ public class GamePanel extends JPanel {
 		exit.addActionListener(mQuitAction);
 		exit.doClick();
 	}
+	
 }

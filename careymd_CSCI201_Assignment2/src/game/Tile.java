@@ -1,6 +1,8 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.ImageIcon;
 
 /*
  * Tile
@@ -30,7 +32,8 @@ public class Tile {
 	
 	private int xPos;
 	private int yPos;
-
+	private ImageIcon icon;
+	
 	public Tile(Color color, boolean slide, boolean start, boolean home,int x, int y) {
 		mColor = color;
 		bSlide = slide;
@@ -38,12 +41,16 @@ public class Tile {
 		bHome = home;
 		xPos = x;
 		yPos = y;
+
 	}
+
+	public ImageIcon getIcon() {return icon;}
 	
 	public Color getColor() {return mColor;}
 	
 	public void setNext(Tile inNext) { mNext = inNext; }
 	public void setNextSameColor(Tile inNextSameColor) {mNextSameColor = inNextSameColor;}
+	
 	public Tile getNext(Color c) {
 		if(mNextSameColor == null) System.out.println("FUCKSHIT");
 		if (c.equals(mColor)) return mNextSameColor;

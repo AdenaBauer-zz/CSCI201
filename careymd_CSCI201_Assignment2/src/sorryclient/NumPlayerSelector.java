@@ -85,7 +85,6 @@ public class NumPlayerSelector extends JPanel {
 			System.out.print("font error thrown");
 		}
 		
-		
 		JPanel topPanel = new JPanel();
 		topPanel.add(selectPlayerLabel);
 		
