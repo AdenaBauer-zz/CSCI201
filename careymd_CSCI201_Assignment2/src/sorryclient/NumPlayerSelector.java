@@ -103,6 +103,22 @@ public class NumPlayerSelector extends JPanel {
 			optionButtons[i] = new JRadioButton(""+(i+2));
 			optionButtons[i].setOpaque(false);
 			optionButtons[i].setFont(font);
+			optionButtons[i].setBorderPainted(false);
+			
+			BufferedImage tickIcon = null;
+			BufferedImage circleIcon = null;
+			try{
+				tickIcon= ImageIO.read(new File("src/imgs/grey_boxTick.png"));
+				circleIcon = ImageIO.read(new File("src/imgs/grey_circle.png"));
+			}
+			
+			catch(Exception e){
+				System.out.print("Tick Icon didnt work");
+			}
+			ImageIcon selectedIcon = new ImageIcon(tickIcon);
+			optionButtons[i].setIcon(new ImageIcon(circleIcon));
+			optionButtons[i].setSelectedIcon(selectedIcon);
+			
 			final int buttonSelection = i+2;
 			optionButtons[i].addActionListener(new ActionListener() {
 				@Override

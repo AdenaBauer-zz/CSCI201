@@ -1,0 +1,35 @@
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+public class scoreTable extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public scoreTable() {
+		super("Table Example");
+		JPanel jp = new JPanel();
+		String [] columnNames = {"Tables", "# People"};
+		Object [][] data = {
+				{"Table 1", 4},
+				{"Table 5", 6},
+				{"Table 7", 4},
+				{"Table 10", 3},
+				{"Table 12", 4},
+				{"Table 13", 6}
+				};
+		JTable tables = new JTable(data, columnNames);
+		JScrollPane jsp = new JScrollPane(tables);
+		jp.add(jsp);
+		add(jp);
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(200, 300);
+		setLocationRelativeTo(null);
+		setVisible(true);
+	 }
+
+}

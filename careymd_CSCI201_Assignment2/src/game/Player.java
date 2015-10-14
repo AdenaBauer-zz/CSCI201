@@ -16,7 +16,7 @@ public final class Player {
 	
 	private final Color mColor;
 	
-	{ //Initialize
+	{ //Initialized
 		mPawns = new Pawn[numPawns];
 		startPawns = new Stack<Pawn>();
 	}
@@ -58,5 +58,6 @@ public final class Player {
 	public void resetStartPawns() {
 		startPawns.removeAllElements();
 	}
+
 	
 }

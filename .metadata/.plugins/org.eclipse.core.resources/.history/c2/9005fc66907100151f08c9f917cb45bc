@@ -1,0 +1,23 @@
+package game;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+
+public class NameAsker {
+	public NameAsker(String s)
+	{
+		JFrame frame = new JFrame("s + Wins!");
+		JLabel j = new JLabel(s);
+		String name = JOptionPane.showInputDialog(frame, "What's your name?");
+		System.out.printf("The user's name is '%s'.\n", name);
+		System.exit(0);
+  }
+}

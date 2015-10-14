@@ -1,0 +1,52 @@
+package game;
+import java.awt.Color;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
+import game.TopScore;
+
+
+public class scoreTable extends JFrame{
+
+	private static final long serialVersionUID = 1L;
+
+	public scoreTable() {
+		super("Table Example");
+		JPanel jp = new JPanel();
+		String [] columnNames = {"Tables", "# People"};
+		Object [][] data = {
+				
+		};
+		
+		DefaultTableModel tableModel = new DefaultTableModel(data, columnNames);
+
+		JTable tables = new JTable(data, columnNames);
+		tables.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tables.setSelectionForeground(Color.WHITE);
+		tables.setSelectionBackground(Color.RED);
+		
+		if(!TopScore.scoresEmpty()){
+			for (Entry<String, Integer> entry : TopScore.playerScores.entrySet()){
+				String currName = entry.getKey();
+				int currScore = entry.getValue();
+				tableModel.addRow(new Object[]{currName, currScore});
+			}	
+		}
+		
+		tables.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tables.setGridColor(Color.BLUE);
+		JScrollPane jsp = new JScrollPane(tables);
+		add(jsp);
+		
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setSize(250, 300);
+		setLocationRelativeTo(null);
+	}
+}

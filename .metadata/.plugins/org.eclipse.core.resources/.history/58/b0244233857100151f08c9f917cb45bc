@@ -1,0 +1,44 @@
+package game;
+import java.awt.Color;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+
+
+public class scoreTable extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+
+	public scoreTable() {
+		super("Table Example");
+		JPanel jp = new JPanel();
+		String [] columnNames = {"Tables", "# People"};
+		Object [][] data = {
+				{"Table 1", 4},
+				{"Table 5", 6},
+				{"Table 7", 4},
+				{"Table 10", 3},
+				{"Table 12", 4},
+				{"Table 7", 4},
+				{"Table 10", 3},
+				{"Table 12", 4},
+				{"Table 13", 6}
+		};
+
+		JTable tables = new JTable(data, columnNames);
+		tables.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tables.setSelectionForeground(Color.WHITE);
+		tables.setSelectionBackground(Color.RED);
+		tables.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tables.setGridColor(Color.BLUE);
+		JScrollPane jsp = new JScrollPane(tables);
+		add(jsp);
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(100, 100);
+		setLocationRelativeTo(null);
+	 }
+}

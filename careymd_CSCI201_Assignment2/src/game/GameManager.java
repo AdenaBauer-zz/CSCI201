@@ -1,9 +1,36 @@
 package game;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import game.CardDeck.Card;
 import sorryclient.GamePanel;
@@ -13,12 +40,16 @@ import sorryclient.GamePanel;
  * Actual logic for the game play
  * */
 public class GameManager {
+	
 	private final static String filePath = "src/game/board";
 	private final GameBoard mGameBoard;
 	
 	//The players (can be idle or not)
 	private final static int numPlayers = 4;
 	private final Player players[];
+	
+	public static int winnerScore;
+	public static String winnerName;
 	
 	//The card deck to be used.
 	private final CardDeck cardDeck;
@@ -42,14 +73,31 @@ public class GameManager {
 	//Winning information
 	private boolean gameOver = false;
 	public boolean isGameOver() {return gameOver;}
-	private String winnerName = null;
 	public String getWinner() {return winnerName;}
+	Font font;
+	public static int numRealPlayers; 
 	
 	//GamePanel to update
 	private GamePanel mGamePanel;
 	
+	public static int[] numPawnsHome = new int[4];
+	
 	//Load in the players, board, and card deck used for play
 	{
+		for(int i = 0; i < 4; i++){
+			numPawnsHome[i] = 0;
+		}
+
+		
+		font = new Font("Calibri", Font.BOLD, 12);
+	    try{
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("src/imgs/kenvector_future.ttf")).deriveFont(Font.PLAIN, 20);;
+		}
+		catch(Exception e){
+			System.out.print("font error thrown");
+		}
+		
+		
 		players = new Player[numPlayers];
 		currentPlaying = mainPlayer;
 		for(int i = 0; i < numPlayers; ++i) {
@@ -61,6 +109,7 @@ public class GameManager {
 	
 	//Set up once we know the players color and number selections
 	public void setUp(Color playerColor, int numLivePlayers) {
+		numRealPlayers = numLivePlayers;
 		livePlayers = new Player[numLivePlayers];
 		int mainPlayerIndex = GameHelpers.getIndexFromColor(playerColor);
 		livePlayers[mainPlayer] = players[mainPlayerIndex];
@@ -102,15 +151,33 @@ public class GameManager {
 	
 	//Draw a card from the deck
 	public void drawCard() {
+
 		if(!canDraw) return;
 		card = cardDeck.drawCard();
 		canDraw = false;
-		JOptionPane.showMessageDialog(
+		/*JOptionPane.showMessageDialog(
 			null, 
 			card.getName(), 
 			"Sorry!", 
 			JOptionPane.NO_OPTION
-		);
+		);*/
+		
+	
+		TestBackgroundImage ibp = new TestBackgroundImage();
+		try{
+			ibp.initUI();
+		}
+		catch (Exception e){
+			System.out.println("testbackgrounimagedoesnt work");
+		}
+		
+		//JDialog dialog = pane.setMessage(card.getName());
+		//dialog.dispose();
+		//JOptionPane.showMessageDialog(ca,  card.getName(), "Sorry!", JOptionPane.INFORMATION_MESSAGE);
+		//JTextArea j = new JTextArea(card.getName());
+		//j.setEditable(false);
+		//ca.add(j);
+			
 		//If the player cannot make a move, just skip
 		if(!canMakeMove()) endTurn();
 	}
@@ -150,8 +217,12 @@ public class GameManager {
 			if(!pawn.getCurrentTile().isHome()) allHome = false;
 		}
 		if(allHome) {
+			
 			Color player = livePlayers[currentPlaying].getColor();
 			if(player.equals(Color.RED)) winnerName = "Red";
+				if(livePlayers[currentPlaying] == getMainPlayer()){
+					
+				}
 			else if(player.equals(Color.GREEN)) winnerName = "Green";
 			else if(player.equals(Color.YELLOW)) winnerName = "Yellow";
 			else if(player.equals(Color.BLUE)) winnerName = "Blue";
@@ -201,6 +272,7 @@ public class GameManager {
 		
 		//If we are dealing with a sorry card
 		if(card.getType() == CardDeck.SORRY) {
+			
 			//For the robots, find another pawn and replace it
 			if(currentPlaying != mainPlayer) {
 				Pawn playerPawn = player.getAvailablePawn();
@@ -315,7 +387,10 @@ public class GameManager {
 			tile.removePawn();
 			if(!endTile.isHome()){
 				endTile.setPawn(pawn);
-			} else pawn.setCurrentTile(endTile);
+			} else {
+				pawn.setCurrentTile(endTile);
+				numPawnsHome[currentPlaying]++;
+			}
 			if(beforeTile != endTile) slideRemove(beforeTile, pawn.getColor());
 		}//Card seven
 		else if (card.getType() == CardDeck.SEVEN){
@@ -609,7 +684,7 @@ public class GameManager {
 		mGameBoard.clearTiles();
 	}
 	
-	//Sets the game baord
+	//Sets the game board
 	private void set() {
 		for(Player player : players) {
 			player.resetStartPawns();
@@ -628,5 +703,87 @@ public class GameManager {
 	public void setGamePanel(GamePanel inGamePanel) {
 		mGamePanel = inGamePanel;
 	}
-	
+	class ImageBackgroundPane extends JOptionPane
+    {
+         private BufferedImage img;
+
+         public ImageBackgroundPane ()
+         {
+        	  try{
+  				img = ImageIO.read(new File("src/imgs/card_blue.png"));
+        	  } 
+        	  catch (IOException e) {
+        		  e.printStackTrace();
+        		 System.out.println("paint component card alert didnt work");
+        	  }
+         }
+
+         @Override
+         public void paint(Graphics g)
+         {
+           g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
+           super.paint(g);
+         }
+    }	
+	public class TestBackgroundImage extends JFrame{
+
+	    private static final String BACKHGROUND_IMAGE_URL = "src/imgs/card_blue.png";
+
+	    protected void initUI() throws MalformedURLException {
+			JDialog dialog = new JDialog(this, TestBackgroundImage.class.getSimpleName());
+	        dialog.setModal(true);
+	        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	        dialog.setLocation(500, 500);
+	        this.setSize(300, 400);
+	        BufferedImage b = null;
+	        try{
+	        	b = ImageIO.read(new File("src/imgs/card_beigeLight.png"));
+	        }
+	        catch(Exception e){
+	        	System.out.println("backgroundimagefailure");
+	        }
+	        final ImageIcon backgroundImage = new ImageIcon(b);
+	        
+	        JPanel mainPanel = new JPanel(new BorderLayout()) {
+	            @Override
+	            protected void paintComponent(Graphics g) {
+	                super.paintComponent(g);
+	                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+	            }
+
+	            @Override
+	            public Dimension getPreferredSize() {
+	                Dimension size = super.getPreferredSize();
+	                size.width = Math.max(backgroundImage.getIconWidth(), size.width);
+	                size.height = Math.max(backgroundImage.getIconHeight(), size.height);
+
+	                return size;
+	            }
+	        };
+	        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+	        JTextArea l = new JTextArea(card.getName());
+	        l.setEditable(false);
+	        l.setFont(font);
+	        l.setOpaque(false);
+	        l.setLineWrap(true);
+	        l.setAlignmentY(CENTER_ALIGNMENT);
+	        l.setAlignmentX(CENTER_ALIGNMENT);
+	        mainPanel.add(l, BorderLayout.CENTER);
+	        JButton j = new JButton("ok");
+	        j.setFont(font);
+	        j.setSize(100, 50);
+	        j.addActionListener(new ActionListener(){
+	        	public void actionPerformed(ActionEvent e)
+	        	{
+	        		setVisible(false); //you can't see me!
+	        		dispose();
+	        	}
+	        });
+	        mainPanel.add(j, BorderLayout.SOUTH);
+	        dialog.add(mainPanel);
+	        dialog.setSize(300, 400);
+	        dialog.setVisible(true);
+	    }
+	}
 }

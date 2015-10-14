@@ -27,7 +27,7 @@ public class GameBoard {
 	{//constructor
 		homes = new Tile[numPlayers];
 		starts = new Tile[numPlayers];
-		tiles = new Tile[boardSize][boardSize];	
+		tiles = new Tile[boardSize][boardSize];
 	}
 	
 	public GameBoard(File configFile, Player[] players){

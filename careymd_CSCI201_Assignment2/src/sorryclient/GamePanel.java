@@ -1,11 +1,17 @@
 package sorryclient;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -16,16 +22,21 @@ import java.io.IOException;
 import java.util.Stack;
 
 import javax.imageio.ImageIO;
+import javax.print.DocFlavor.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import game.GameHelpers;
 import game.GameManager;
+import game.NameAsker;
 import game.Tile;
+import game.scoreTable;
 
 /*
  * GamePanel
@@ -45,7 +56,10 @@ public class GamePanel extends JPanel {
 	BufferedImage cardButtonIcon;
 	ImageIcon icon;
 	Image scaledImage = null;
-
+	Font font;	
+	TilePanel cardLabelTile;
+	TilePanel cardButtonTile;
+	
 	
 	//The game manager that runs the actual logic
 	private final GameManager mGameManager;
@@ -56,7 +70,8 @@ public class GamePanel extends JPanel {
 	{
 		//Create and set-up the card button
 		try{
-			
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("src/imgs/kenvector_future.ttf")).deriveFont(Font.PLAIN, 8);
+
 			cardButtonIcon = ImageIO.read(new File("src/imgs/cardBack_red.png")); 
 			//scaledImage = cardButtonIcon.getScaledInstance(this.getWidth(),this.getHeight(),Image.SCALE_AREA_AVERAGING);
 			//icon.setImage(scaledImage);
@@ -64,7 +79,7 @@ public class GamePanel extends JPanel {
 		catch(Exception e){
 			System.out.print("button image threw exception");
 		}
-			
+
 		cardButton = new JButton(new ImageIcon(cardButtonIcon));
 		cardButton.addActionListener(new ActionListener() {
 			@Override
@@ -74,12 +89,19 @@ public class GamePanel extends JPanel {
 			}
 		});
 		cardLabel = new JLabel("Cards:");
+		cardLabel.setFont(font);
 		cardButton.setBorderPainted(false);
 	}
 	
 	public GamePanel(ActionListener inQuitAction, GameManager inGameManager){
 		mQuitAction = inQuitAction;
 		mGameManager = inGameManager;
+		
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+	    Image image = toolkit.getImage("src/imgs/cursorHand_grey.png");
+	    Cursor c = toolkit.createCustomCursor(image , new Point(this.getX(), 
+	    this.getY()), "img");
+	    this.setCursor (c);
 		
 		//Create the GUI to be a grid for all the tiles
 		setLayout(new GridLayout(boardSize,boardSize));
@@ -102,19 +124,31 @@ public class GamePanel extends JPanel {
 			}
 		}
 		
+		
 		//Set in the card
-		TilePanel cardLabelTile = tileGrid[boardSize/2-1][boardSize/2-1];
+		cardLabelTile = tileGrid[boardSize/2-1][boardSize/2-1];
 		cardLabelTile.setLayout(new GridLayout(1,1));
 		cardLabelTile.add(cardLabel);
 		
-		TilePanel cardButtonTile = tileGrid[boardSize/2][boardSize/2-1];
+		cardButtonTile = tileGrid[boardSize/2][boardSize/2-1];
 		cardButtonTile.setLayout(new GridLayout(1,1));
 		cardButtonTile.add(cardButton);
 		
 		//This is used to make sure the GameManager can redraw the GUI
 		inGameManager.setGamePanel(this);
 		
+		
 		redraw();
+	}
+	
+	@Override
+	  protected void paintComponent(Graphics g) {
+
+	    super.paintComponent(g);
+	   
+	    Toolkit toolkit2 = Toolkit.getDefaultToolkit();
+	    Image image = toolkit2.getImage("src/imgs/sorry.png");	
+	    g.drawImage(image, 200, 90, 200, 100, null);
 	}
 	
 	public void redraw() {
@@ -126,7 +160,7 @@ public class GamePanel extends JPanel {
 		revalidate();
 		repaint();
 	}
-
+	
 	//Each tile is a square in the grid, it can be null to hold a blank square
 	class TilePanel extends JPanel {
 		private static final long serialVersionUID = -9071191204545371340L;
@@ -138,26 +172,74 @@ public class GamePanel extends JPanel {
 		private boolean pawnDisplayed = false;
 		public Color color;
 		
+		
 		TilePanel(Tile tile) {
 			mTile = tile;
 			//Used to keep track what component should be displayed
 			components = new Stack<Component>();
 			//If we are a meaningful tile in the game
 			if(mTile != null) {
-				color = mTile.getColor();		
-				//setBorder(new LineBorder(mTile.getColor()));
+				color = mTile.getColor();				
 				//Set any special looks based on the tiles properties
 				BufferedImage slideIcon = null;
+				BufferedImage startLabelIcon = null;
+				if(mTile.doesSlide()){
+					try{
+						slideIcon = ImageIO.read(new File(GameHelpers.getSlideLabelFromColor(mTile.getColor())));
+						//slideIcon = ImageIO.read(new File("src/imgs/yellow_slide.png"));
+					}
+					catch(Exception e){
+						System.out.println("slideIcon didnt work");
+					}
+					components.push(new JLabel(new ImageIcon (slideIcon)));
+					
+				}
+
+				if(mTile.isStart()){
+					try{
+						
+						startLabelIcon = ImageIO.read(new File(GameHelpers.getStartHomeLabelFromIndex(mTile.getColor())));
+						scaledImage = startLabelIcon.getScaledInstance(this.getWidth(),this.getHeight(),Image.SCALE_SMOOTH);
+						icon = new ImageIcon(scaledImage);
+					}
+					catch(Exception e){
+						System.out.println("start/home panel didnt work");
+					}
+					
+					JLabel startLabel = new JLabel(new ImageIcon(startLabelIcon));
+					startLabel.setText("START");
+				    startLabel.setHorizontalTextPosition(JButton.CENTER);
+				    startLabel.setVerticalTextPosition(JButton.TOP);
+				    startLabel.setFont(font);
+				    startLabel.setOpaque(true);
+
+
+					components.push(startLabel);	
+				}
 				
-				try{
-					slideIcon = ImageIO.read(new File(GameHelpers.getSlideLabelFromColor(mTile.getColor())));
+				if(mTile.isHome()){
+					
+					try{
+						
+						startLabelIcon = ImageIO.read(new File(GameHelpers.getStartHomeLabelFromIndex(mTile.getColor())));
+						scaledImage = startLabelIcon.getScaledInstance(this.getWidth(),this.getHeight(),Image.SCALE_SMOOTH);
+						icon = new ImageIcon(scaledImage);
+					}
+					catch(Exception e){
+						System.out.println("start/home panel didnt work");
+					}
+					
+					JLabel homeLabel = new JLabel(new ImageIcon(startLabelIcon));
+					homeLabel.setText("HOME");
+				    homeLabel.setHorizontalTextPosition(JButton.CENTER);
+				    homeLabel.setVerticalTextPosition(JButton.TOP);
+				    homeLabel.setFont(font);
+				    homeLabel.setOpaque(true);
+					homeLabel.setComponentZOrder(this, 0);
+
+					
+					components.push(homeLabel);
 				}
-				catch(Exception e){
-					System.out.print("slideIcon didnt work");
-				}
-				if(mTile.doesSlide()) components.push(new JLabel(new ImageIcon (slideIcon)));
-				if(mTile.isStart()) components.push(new JLabel("Start"));
-				if(mTile.isHome()) components.push(new JLabel("Home"));
 				
 				//If the tile is clicked by the user...
 				addMouseListener(new MouseAdapter() {
@@ -171,46 +253,40 @@ public class GamePanel extends JPanel {
 		}	
 		
 		public void paintComponent(Graphics g) {
-		
-				 
+					 
 			super.paintComponent(g);
 			String s = null;
 			boolean shouldBePainted = true;
 			Image scaledImage = null;
 			if(color == Color.BLUE){
 				s = "src/imgs/blue_tile.png";
-				System.out.println("blue!");
 			}
 			else if(color == Color.YELLOW){
 				s = "src/imgs/yellow_tile.png";
-				System.out.println("yellow!");
 
 			}
 			else if(color == Color.GREEN){
 				s = "src/imgs/green_tile.png";
-				System.out.println("green!");
-
 			}
 			else if(color == Color.RED){
 				s = "src/imgs/red_tile.png";
-				System.out.println("red!");
-
 			}
 			else if(color == Color.BLACK){
 				s = "src/imgs/grey_tile.png";
-				System.out.println("black");
 			}
 			else{
-				System.out.println("other :(   ");
 				shouldBePainted = false;
+				if(this != cardButtonTile && this != cardLabelTile){
+					this.setVisible(false);
+
+				}
 			}
 				
 			if(shouldBePainted == true){
 				BufferedImage img = null;
 				//String s = GameHelpers.getIconFromIndex(GameHelpers.getIndexFromColor(mTile.getColor()));
 			
-				try{
-					System.out.println(s);
+			try{
 					img = ImageIO.read(new File(s));
 					scaledImage = img.getScaledInstance(this.getWidth(),this.getHeight(),Image.SCALE_SMOOTH);
 
@@ -218,12 +294,9 @@ public class GamePanel extends JPanel {
 				catch (IOException e) {
 					e.printStackTrace();
 					System.out.println("didnt work");
-
 				}
-					g.drawImage(scaledImage, 0, 0, null);
-				
-			}
-		  
+					g.drawImage(scaledImage, 0, 0, null);			
+			}	  
 		}
 
 		//Update the tile based on its properties
@@ -261,6 +334,8 @@ public class GamePanel extends JPanel {
 		@Override
 		protected void update() {
 			mLabel.setText(mGameManager.getPlayerStartCount(mPlayerNum));
+			mLabel.setFont(font);
+			mLabel.setVisible(false);
 		}
 	}	
 	
@@ -280,17 +355,25 @@ public class GamePanel extends JPanel {
 		@Override
 		protected void update() {
 			mLabel.setText(mGameManager.getPlayerHomeCount(mPlayerNum));
+			mLabel.setFont(font);
+			mLabel.setVisible(false);
 		}
 	}
 
 	public void endGame(String winnerName) {
-		JOptionPane.showMessageDialog(
+		NameAsker nameAsker = new NameAsker(winnerName);
+		
+		/*JOptionPane.showMessageDialog(
 				null, 
 				mGameManager.getWinner() + " player won!", 
 				"Sorry!", 
 				JOptionPane.NO_OPTION
-			);
+			);*/
 		//Quit out if over
+		String n = nameAsker.getName();
+		scoreTable st  = new scoreTable();
+		
+		st.addScore(n);
 		JButton exit = new JButton("");
 		exit.addActionListener(mQuitAction);
 		exit.doClick();

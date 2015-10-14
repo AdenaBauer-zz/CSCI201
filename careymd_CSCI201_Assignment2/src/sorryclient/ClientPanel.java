@@ -1,9 +1,15 @@
 package sorryclient;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 import game.GameManager;
@@ -21,6 +27,7 @@ public class ClientPanel extends JPanel {
 	private NumPlayerSelector numPlayerSelect;
 	private ColorSelector colorSelect;
 	private GamePanel gamePanel;
+	JMenuBar menuBar;
 	
 	//Takes in input from the collected info from the other panels
 	private GameManager gameManager;
@@ -42,6 +49,21 @@ public class ClientPanel extends JPanel {
 		add(mainMenu);
 		refreshComponents();
 	}
+	
+	@Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        BufferedImage image1 = null;
+	    java.net.URL resource = getClass().getResource("src/imgs/sorry.png");
+        try {
+            image1 = ImageIO.read(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+		g.drawImage(image1, 3, 4, ClientPanel.this);
+    }
 
 	private void refreshComponents() {
 		numPlayerSelect = new NumPlayerSelector(new ActionListener() {
